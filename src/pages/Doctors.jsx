@@ -2,7 +2,7 @@ import DoctorCard from "../components/molecule/DoctorCard"
 import PageHeader from "../components/molecule/PageHeader"
 import PaginationRounded from "../components/molecule/PaginationRounded"
 import BookCard from "../components/organism/BookCard";
-import bookCardData from "../constants/BookCardData";
+import bookCardData from "../constants/bookCardData";
 import { doctorsData } from "../constants/doctorData"
 
 const delays = [0, 100, 200, 300];
