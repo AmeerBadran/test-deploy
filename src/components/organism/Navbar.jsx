@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { FaBars } from "react-icons/fa";
 import NavLinks from "../atoms/NavLink";
 import AuthButton from "../atoms/AuthBotton";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   const [isHalfScreen, setIsHalfScreen] = useState(window.innerWidth > 950);
@@ -35,11 +36,13 @@ function Navbar() {
     <div className="bg-[#EFF8FF] border-b border-[#D8E5ED]">
       <header
         className={`max-w-[1300px] mx-auto flex items-center justify-between ${isHalfScreen ? "h-28" : "h-20"} px-4 relative`}>
-        <img src={mainLogo} alt="Logo" className="w-52 min-w-40" />
+        <Link to="/">
+          <img src={mainLogo} alt="Logo" className="w-52 min-w-40" />
+        </Link>
         {isHalfScreen ? (
           <div className="flex w-full justify-between">
             <ul className="flex flex-1 gap-6 slg:gap-8 xl:gap-14 justify-center items-center p-4">
-              <NavLinks linksLayout={"fullPage"} bgColor={'light'}/>
+              <NavLinks linksLayout={"fullPage"} bgColor={'light'} />
 
             </ul>
             <div className="flex gap-1">
@@ -56,7 +59,7 @@ function Navbar() {
           className={`absolute bg-[#0E384C] right-2 left-2 z-50 rounded-md p-5 transition-all duration-300 ${openNav && !isHalfScreen ? "top-24 opacity-100" : "-top-96 opacity-0"}`}>
           <div className="flex flex-col w-full justify-between">
             <ul className="flex flex-col flex-1 gap-4 justify-start items-start w-full">
-              <NavLinks linksLayout={"halfPage"} bgColor={'dark'} handleNavButton={handleNavButton}/>
+              <NavLinks linksLayout={"halfPage"} bgColor={'dark'} handleNavButton={handleNavButton} />
             </ul>
             <div className="flex gap-1 mt-5 flex-col xmobile:flex-row">
               <AuthButton label="SignUp" icon={IoMdPersonAdd} roundedPosition="left" bgType="dark" to={'signUp'} />

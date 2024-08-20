@@ -1,8 +1,16 @@
 import { useFormik } from 'formik';
 import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import Chip from '@mui/material/Chip';
+import { useState } from 'react';
+
+const allergiesOptions = ['Peanuts', 'Gluten', 'Shellfish', 'Soy', 'Dairy'];
 
 const SignUpForm = () => {
+  const [selectedAllergies, setSelectedAllergies] = useState([]);
+
   const formik = useFormik({
     initialValues: {
       firstName: '',
@@ -10,7 +18,7 @@ const SignUpForm = () => {
       email: '',
       phoneNumber: '',
       idNumber: '',
-      allergy: '',
+      allergy: [],
     },
     validationSchema: Yup.object({
       firstName: Yup.string()
@@ -28,10 +36,12 @@ const SignUpForm = () => {
         .max(10, 'Must be exactly 10 digits')
         .required('Required'),
       idNumber: Yup.string()
+        .min(9, "Enter valid id 'minimum 9 numbers'")
         .matches(/^[0-9]+$/, 'Must be only digits')
         .required('Required'),
     }),
     onSubmit: values => {
+      values.allergy = selectedAllergies; // تحديث قيمة الحساسية في الـ formik
       alert(JSON.stringify(values, null, 2));
     },
   });
@@ -120,11 +130,41 @@ const SignUpForm = () => {
           <label className="block text-sm font-medium text-gray-700">
             Note: If you have an allergy, mention it here.
           </label>
-          <input
-            id="allergy"
-            type="text"
-            {...formik.getFieldProps('allergy')}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          <Autocomplete
+            multiple
+            id="allergy-select"
+            options={allergiesOptions}
+            getOptionLabel={(option) => option}
+            value={selectedAllergies}
+            onChange={(event, newValue) => {
+              setSelectedAllergies(newValue);
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="standard"
+                label="Select Allergies"
+                placeholder="Choose..."
+              />
+            )}
+            renderTags={(tagValue, getTagProps) =>
+              tagValue.map((option, index) => {
+                // eslint-disable-next-line no-unused-vars
+                const { key, ...restTagProps } = getTagProps({ index });
+                return (
+                  <Chip
+                    key={index}
+                    label={option}
+                    {...restTagProps}
+                    onDelete={() => {
+                      setSelectedAllergies((prev) =>
+                        prev.filter((item) => item !== option)
+                      );
+                    }}
+                  />
+                );
+              })
+            }
           />
         </div>
 

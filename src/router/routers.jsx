@@ -18,11 +18,11 @@ import PatientRecords from "../template/PatientRecords";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/test-deploy/",
     element: <RootLayout />,
     children: [
       {
-        path: "/",
+        index: true,
         element: (
           <Home />
         ),
