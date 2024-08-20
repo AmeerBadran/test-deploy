@@ -18,7 +18,7 @@ import PatientRecords from "../template/PatientRecords";
 
 const router = createBrowserRouter([
   {
-    path: "/test-deploy/",
+    path: "/",
     element: <RootLayout />,
     children: [
       {
