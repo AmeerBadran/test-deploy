@@ -2,6 +2,7 @@
 import { FaDownload, FaRegMoneyBillAlt } from 'react-icons/fa';
 import { MdDateRange, MdNoteAlt } from 'react-icons/md';
 import { BiSolidNote } from 'react-icons/bi';
+import { GiPayMoney } from "react-icons/gi";
 
 const ReportCard = ({
   name,
@@ -11,7 +12,13 @@ const ReportCard = ({
   reports,
   medicalRecordText,
   notesText,
+  amountPaid,
 }) => {
+  const paymentStatusText =
+    cost === amountPaid
+      ? "The amount has been fully paid"
+      : `${amountPaid}$ paid out of the total amount`;
+
   return (
     <div className="p-6 shadow-lg bg-[#0E485E05] rounded-md border border-[#e5e7eb99] flex flex-col gap-4">
       <div className="flex justify-between">
@@ -33,7 +40,7 @@ const ReportCard = ({
         </div>
         <div className="flex items-center gap-2">
           <FaRegMoneyBillAlt />
-          <p>{cost}</p>
+          <p>{cost}$</p>
         </div>
       </div>
       <div className="flex gap-3 flex-wrap text-[#156184]">
@@ -54,6 +61,12 @@ const ReportCard = ({
         <div className="flex items-center gap-2">
           <MdNoteAlt />
           <p>{notesText}</p>
+        </div>
+      </div>
+      <div className="flex gap-4 text-[#156184]">
+        <div className="flex items-center gap-2">
+          <GiPayMoney />
+          <p>{paymentStatusText}</p>
         </div>
       </div>
     </div>
