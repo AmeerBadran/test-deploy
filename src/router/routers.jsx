@@ -1,4 +1,3 @@
-
 import {
   createBrowserRouter,
   RouterProvider,
@@ -13,8 +12,11 @@ import Doctors from "../pages/Doctors";
 import NotFound from "../pages/NotFound";
 import Admin from "../pages/Admin";
 import MainDoctor from "../pages/MainDoctor";
-import Appointment from "../template/Appointment ";
+import Appointment from "../template/Appointment";
 import PatientRecords from "../template/PatientRecords";
+import ProtectdRoute from "../components/HOC/withProtect";
+import NotProtectdRoute from "../components/HOC/withNotProtect";
+import PersistLogin from "../components/HOC/PersistLogin";
 
 const router = createBrowserRouter([
   {
@@ -22,75 +24,74 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       {
-        index: true,
-        element: (
-          <Home />
-        ),
-      },
-      {
-        path: "/doctors",
-        element: (
-          <Doctors />
-        ),
-      },
-      {
-        path: "/contactUs",
-        element: (
-          <ContactUs />
-        ),
-      },
-      {
-        path: "/admin",
-        element: (
-          <Admin />
-        ),
-      },
-      {
-        path: "/mainDoctor",
-        element: <MainDoctor />,
+        element: <PersistLogin />,
         children: [
           {
-
-            path: "/mainDoctor",
+            path: '/',
+            element: <Home />,
+          },
+          {
+            path: "/doctors",
             element: (
-              <Appointment />
+              <ProtectdRoute path="/doctors" element={<Doctors />} />
             ),
           },
           {
-
-            path: "/mainDoctor/patientRecords",
+            path: "/contactUs",
             element: (
-              <PatientRecords />
+              <ProtectdRoute path="/contactUs" element={<ContactUs />} />
             ),
           },
-        ]
+          {
+            path: "/admin",
+            element: (
+              <ProtectdRoute path="/admin" element={<Admin />} />
+            ),
+          },
+          {
+            path: "/mainDoctor",
+            element: (
+              <ProtectdRoute path="/mainDoctor" element={<MainDoctor />} />
+            ),
+            children: [
+              {
+                path: "appointment",
+                element: <Appointment />,
+              },
+              {
+                path: "patientRecords",
+                element: <PatientRecords />,
+              },
+            ]
+          },
+        ],
       },
       {
         path: "/logIn",
         element: (
-          <LogIn />
+          <NotProtectdRoute path="/logIn" element={<LogIn />} />
         ),
       },
       {
         path: "/signUp",
         element: (
-          <SignUp />
+          <NotProtectdRoute path="/signUp" element={<SignUp />} />
         ),
       },
       {
         path: '*',
-        element: (
-          <NotFound />
-        )
+        element: <NotFound />,
       },
     ],
   },
-],
-  {
-    basename: "/test-deploy",
-  }
-);
+], {
+  basename: "/test-deploy/",
+});
 
 export default function AppRouter() {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+    </>
+  );
 }

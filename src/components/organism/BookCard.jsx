@@ -9,16 +9,16 @@ const BookCard = ({ doctor }) => {
     >
       <img
         className="object-cover w-full md:h-auto md:max-w-64 md:rounded-l-lg"
-        src={doctor.image}
-        alt={doctor.name}
+        src={doctor.avatar}
+        alt={`${doctor.first_Name} ${doctor.last_Name}`}
       />
       <div className="flex flex-col justify-between p-4 leading-normal w-full md:w-3/4">
         <h5 className="mb-2 text-lg font-bold tracking-tight text-gray-900">
-          {doctor.name}
+          {`Dr.${doctor.first_Name} ${doctor.last_Name}`}
         </h5>
         <p className="text-sm text-gray-700 dark:text-gray-400">
           {doctor.details} <br />
-          Working hours: {doctor.workingHours}
+          Working hours: {doctor.workTime}
         </p>
         <div className="p-3 bg-[#e3eef3] rounded mt-4 flex justify-between shadow-md">
           <span

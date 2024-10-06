@@ -1,22 +1,34 @@
 import heroImg from "../assets/images/hero-img.png"
 import AuthButton from "../components/atoms/AuthBotton"
-import doctor1 from "../assets/images/team-1.jpg"
-import doctor2 from "../assets/images/team-2.jpg"
-import doctor3 from "../assets/images/team-3.jpg"
-import doctor4 from "../assets/images/team-4.jpg"
 import { PiStarFourFill } from "react-icons/pi";
 import { IoSearchSharp } from "react-icons/io5";
 import { RiToothFill } from "react-icons/ri";
 import { FaUserDoctor } from "react-icons/fa6";
 import AOS from 'aos';
 import 'aos/dist/aos.css'; // You can also use <link> for styles
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchForm from "../components/molecule/SearchFrom";
 import DoctorCard from "../components/molecule/DoctorCard"
+import { getDoctors } from "../api/endpoints/doctors"
 // ..
 AOS.init();
 export default function Home() {
   const [openSearch, setOpenSearch] = useState(false);
+  const [doctors, setDoctors] = useState([]);
+
+
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const respons = await getDoctors();
+        setDoctors(respons.data);
+      } catch (error) {
+        console.error("Error fetching doctors:", error);
+      }
+    };
+
+    fetchDoctors();
+  }, []);
 
   const handleButtonClick = () => {
     setOpenSearch(!openSearch); // Toggle the openSearch state
@@ -50,50 +62,19 @@ export default function Home() {
           <p className="text-[#cce2ee]">We are committed to sustainability. eco-friendly initiatives.</p>
         </div>
         <div className="max-w-[1300px] mx-auto grid lg:grid-cols-4 md:grid-cols-2 gap-7">
-          <DoctorCard
-            imageSrc={doctor1}
-            altText="Doctor Sarah Smith"
-            university="Harvard Medical School"
-            specialization="Cardiology"
-            clinicHoursStart="8:00 AM"
-            clinicHoursEnd="4:00 PM"
-            doctorName="Dr. Sarah Smith"
-            delay="0"
-            duration={"1500"}
-          />
-          <DoctorCard
-            imageSrc={doctor2}
-            altText="Doctor John Doe"
-            university="Stanford University"
-            specialization="Orthopedics"
-            clinicHoursStart="10:00 AM"
-            clinicHoursEnd="6:00 PM"
-            doctorName="Dr. John Doe"
-            delay="200"
-            duration={"1500"}
-          />
-          <DoctorCard
-            imageSrc={doctor3}
-            altText="Doctor Emily Johnson"
-            university="Johns Hopkins University"
-            specialization="Neurology"
-            clinicHoursStart="9:00 AM"
-            clinicHoursEnd="5:00 PM"
-            doctorName="Dr. Emily Johnson"
-            delay="400"
-            duration={"1500"}
-          />
-          <DoctorCard
-            imageSrc={doctor4}
-            altText="Doctor Michael Brown"
-            university="University of California, San Francisco"
-            specialization="Pediatrics"
-            clinicHoursStart="7:00 AM"
-            clinicHoursEnd="3:00 PM"
-            doctorName="Dr. Michael Brown"
-            delay="600"
-            duration={"1500"}
-          />
+          {doctors.map((doctor, index) => (
+            <DoctorCard
+              key={doctor._id}
+              imageSrc={doctor.avatar}
+              altText={`Doctor ${doctor.first_Name} ${doctor.last_Name}`}
+              university={doctor.qualification}
+              specialization={doctor.specialization}
+              workTime={doctor.workTime}
+              doctorName={`Dr. ${doctor.first_Name} ${doctor.last_Name}`}
+              delay={index * 200}
+              duration="1500"
+            />
+          ))}
         </div>
       </div>
     </div>

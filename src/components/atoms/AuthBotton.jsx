@@ -26,7 +26,7 @@ const AuthButton = ({ label, icon: Icon, roundedPosition, bgType, onClick, to })
     <>
       <div
         className={`absolute ${bgClass} w-0 h-full ${roundedClass} ${roundedPosition === "left" ? "right-0" : "left-0"
-          } group-hover:w-full opacity-0 group-hover:opacity-100 transition-all duration-700`}
+          } group-hover:w-full transition-all duration-700`}
       ></div>
       <p className="z-10">{label}</p>
       <Icon className="w-5 h-5 min-w-5 min-h-5 z-10" />
@@ -37,7 +37,7 @@ const AuthButton = ({ label, icon: Icon, roundedPosition, bgType, onClick, to })
     return (
       <Link
         to={to}
-        className={`group flex gap-5 items-center px-4 py-[10px] bg-[#1E84B5] ${textColorClass} font-semibold ${roundedClass} relative duration-300`}
+        className={`group overflow-hidden flex gap-5 items-center px-4 py-[10px] bg-[#1E84B5] ${textColorClass} font-semibold ${roundedClass} relative duration-300`}
       >
         {buttonContent}
       </Link>
@@ -47,7 +47,7 @@ const AuthButton = ({ label, icon: Icon, roundedPosition, bgType, onClick, to })
   return (
     <button
       type="button"
-      className={`group flex gap-5 items-center px-6 py-[10px] bg-[#1E84B5] ${textColorClass} font-semibold ${roundedClass} relative duration-300`}
+      className={`group overflow-hidden flex gap-5 items-center px-6 py-[10px] bg-[#1E84B5] ${textColorClass} font-semibold ${roundedClass} relative duration-300`}
       onClick={onClick}
     >
       {buttonContent}

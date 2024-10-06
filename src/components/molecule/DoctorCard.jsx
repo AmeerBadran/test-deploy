@@ -7,8 +7,7 @@ const DoctorCard = ({
   altText,
   university,
   specialization,
-  clinicHoursStart,
-  clinicHoursEnd,
+  workTime,
   doctorName,
   delay,
   duration
@@ -23,7 +22,7 @@ const DoctorCard = ({
       <div className="h-5/6 relative group overflow-hidden rounded-3xl drop-shadow-lg shadow-white flex-1">
         <img
           className="h-full object-cover transition-all duration-1000 rounded-3xl cursor-pointer scale-110 group-hover:scale-100"
-          src={imageSrc}
+          src={`https://cos-server-rndb.onrender.com/uploads/avatar/${imageSrc}`}
           alt={altText}
         />
         <div className="absolute origin-bottom-left flex flex-col gap-3 justify-center bottom-0 bg-[#EFF8FFDD] rounded-t-3xl px-4 z-10 h-0 w-full group-hover:h-full transition-all duration-500 text-gray-900 group-hover:py-4 overflow-hidden">
@@ -34,7 +33,7 @@ const DoctorCard = ({
             Specialized in <span className="font-semibold">{specialization}</span>
           </p>
           <p className="text-sm 2xmobile:text-2xl lg:text-base xl:text-lg opacity-0 group-hover:opacity-100 transition-all duration-500">
-            Clinic Hours: <span className="font-semibold">{clinicHoursStart}</span> - <span className="font-semibold">{clinicHoursEnd}</span>
+            Clinic Hours: <span className="font-semibold">{workTime}</span>
           </p>
           <div className='group/button w-3/5 mx-auto mt-24'>
             <button type='button' className='group/button border-4 border-[#0E384C] rounded text-xl text-[#0E384C] w-full font-bold  relative overflow-hidden'>

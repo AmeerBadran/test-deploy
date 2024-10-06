@@ -1,22 +1,49 @@
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useDispatch } from 'react-redux';
+import { logIn } from '../../api/endpoints/auth';
+import { saveAuthData } from '../../features/authData/authDataSlice';
 
 const LogInForm = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const callLogIn = async (loginData) => {
+    try {
+      const response = await logIn(loginData);
+      return response;
+    } catch (error) {
+      toast.error("Login failed:", error);
+      return { error: "Login failed. Please try again." };
+    }
+  }
   const formik = useFormik({
     initialValues: {
-      userName: '',
+      email: '',
       password: '',
     },
     validationSchema: Yup.object({
-      userName: Yup.string()
-        .max(15, 'Must be 15 characters or less')
+      email: Yup.string()
         .required('Required'),
       password: Yup.string()
         .max(20, 'Must be 20 characters or less')
         .required('Required'),
     }),
-    onSubmit: values => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      const response = await callLogIn(values);
+      if (response.error) {
+        toast.error(response.error || 'Login failed. Please try again.');
+      } else {
+        toast.success(response.data.message);
+        dispatch(saveAuthData({
+          accessToken: response.data.accessToken,
+          userId: response.data.userData,
+          userRole: response.data.userRole,
+        }));
+        navigate('/');
+      }
     },
   });
 
@@ -26,17 +53,17 @@ const LogInForm = () => {
       <p className='text-sm text-gray-400 mb-6'>If you have an account with us, please log in.</p>
       <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
         <div>
-          <label htmlFor="userName" className="block text-sm font-medium text-gray-700">
-            User Name
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            Email
           </label>
           <input
-            id="userName"
+            id="email"
             type="text"
-            {...formik.getFieldProps('userName')}
+            {...formik.getFieldProps('email')}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
-          {formik.touched.userName && formik.errors.userName ? (
-            <p className="text-red-500 text-sm mt-1">{formik.errors.userName}</p>
+          {formik.touched.email && formik.errors.email ? (
+            <p className="text-red-500 text-sm mt-1">{formik.errors.email}</p>
           ) : null}
         </div>
 

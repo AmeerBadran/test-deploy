@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useFormik } from 'formik';
 import { LuUploadCloud } from "react-icons/lu";
-
+import { addDoctor } from '../../api/endpoints/doctors';
 
 const ImageUpload = ({ setFieldValue }) => {
   const [imagePreview, setImagePreview] = useState('');
@@ -10,7 +10,7 @@ const ImageUpload = ({ setFieldValue }) => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setFieldValue('image', file);
+      setFieldValue('avatar', file); // Update field name to 'avatar'
       const imageUrl = URL.createObjectURL(file);
       setImagePreview(imageUrl);
     }
@@ -55,23 +55,31 @@ const ImageUpload = ({ setFieldValue }) => {
 const DoctorForm = () => {
   const formik = useFormik({
     initialValues: {
-      lastName: '',
-      firstName: '',
-      age: '',
+      last_Name: '',
+      first_Name: '',
+      gender: '',
+      birthdate: '',
       qualification: '',
       experience: '',
       specialization: '',
       description: '',
-      phoneNumber: '',
+      phone: '',
       email: '',
+      password: '',
       country: '',
       city: '',
-      postalCode: '',
-      image: null,
+      workTime: '',
+      postalCode: '', // Not used in the backend, can be removed if not required
+      avatar: null,
     },
-    onSubmit: (values) => {
-      console.log('Form data:', values);
-      console.log('Image file:', values.image);
+    onSubmit: async (values) => {
+      try {
+        await addDoctor(values);
+        alert('Doctor created successfully');
+      } catch (error) {
+        console.error('Error creating doctor:', error);
+        alert('Failed to create doctor');
+      }
     },
   });
 
@@ -80,41 +88,56 @@ const DoctorForm = () => {
       <h1 className='my-4 text-xl font-bold text-[#0E394D]'>Add Doctor</h1>
       <div className="grid grid-cols-1 2xmobile:grid-cols-2 2md:grid-cols-3 gap-4 items-center">
         <div>
-          <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="first_Name" className="block text-sm font-medium text-gray-700">
             First Name:
           </label>
           <input
-            id="firstName"
-            name="firstName"
+            id="first_Name"
+            name="first_Name"
             type="text"
-            {...formik.getFieldProps('firstName')}
+            {...formik.getFieldProps('first_Name')}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
           />
-
         </div>
 
         <div>
-          <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="last_Name" className="block text-sm font-medium text-gray-700">
             Last Name:
           </label>
           <input
-            id="lastName"
-            name="lastName"
+            id="last_Name"
+            name="last_Name"
             type="text"
-            {...formik.getFieldProps('lastName')}
+            {...formik.getFieldProps('last_Name')}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
           />
         </div>
 
         <div>
-          <label htmlFor="age" className="block text-sm font-medium text-gray-700">
-            Age:
+          <label htmlFor="gender" className="block text-sm font-medium text-gray-700">
+            Gender:
+          </label>
+          <select
+            id="gender"
+            name="gender"
+            {...formik.getFieldProps('gender')}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
+          >
+            <option value="" label="Select gender" />
+            <option value="male" label="Male" />
+            <option value="female" label="Female" />
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="birthdate" className="block text-sm font-medium text-gray-700">
+            Birthdate:
           </label>
           <input
-            id="age"
-            name="age"
-            type="number"
-            {...formik.getFieldProps('age')}
+            id="birthdate"
+            name="birthdate"
+            type="date" // Change to 'date' for birthdate input
+            {...formik.getFieldProps('birthdate')}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
           />
         </div>
@@ -174,14 +197,14 @@ const DoctorForm = () => {
 
       <div className='grid grid-cols-1 2xmobile:grid-cols-2 md:grid-cols-3 gap-4'>
         <div>
-          <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
             Phone Number:
           </label>
           <input
-            id="phoneNumber"
-            name="phoneNumber"
+            id="phone"
+            name="phone"
             type="text"
-            {...formik.getFieldProps('phoneNumber')}
+            {...formik.getFieldProps('phone')}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
           />
         </div>
@@ -195,6 +218,18 @@ const DoctorForm = () => {
             name="email"
             type="email"
             {...formik.getFieldProps('email')}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
+          />
+        </div>
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            Password:
+          </label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            {...formik.getFieldProps('password')}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
           />
         </div>
@@ -226,6 +261,19 @@ const DoctorForm = () => {
           />
         </div>
         <div>
+          <label htmlFor="workTime" className="block text-sm font-medium text-gray-700">
+            WorkTime:
+          </label>
+          <input
+            id="workTime"
+            name="workTime"
+            placeholder='Like "8:00 AM - 2:00 PM"'
+            type="text"
+            {...formik.getFieldProps('workTime')}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
+          />
+        </div>
+        <div>
           <label htmlFor="postalCode" className="block text-sm font-medium text-gray-700">
             Postal Code:
           </label>
@@ -238,16 +286,15 @@ const DoctorForm = () => {
           />
         </div>
       </div>
-      <div className="mt-6 flex justify-center">
-        <ImageUpload setFieldValue={formik.setFieldValue} />
-      </div>
+      <h1 className='mb-8 mt-16 text-xl font-bold text-[#0E394D]'>Profile Image</h1>
+      <ImageUpload setFieldValue={formik.setFieldValue} />
 
-      <div className="mt-8 w-2/6 min-w-44 max-w-64 flex mx-auto">
+      <div className='mt-8 flex justify-end items-center gap-4'>
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-blue-600"
+          className="px-4 py-2 bg-[#0E394D] hover:bg-blue-700 text-white font-bold rounded-md"
         >
-          Submit
+          Save
         </button>
       </div>
     </form>

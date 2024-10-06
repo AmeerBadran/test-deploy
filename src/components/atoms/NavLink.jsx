@@ -3,9 +3,11 @@ import { Link, NavLink } from "react-router-dom";
 import { navLinks } from "../../constants/navLinks";
 import { useState } from "react";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import { useSelector } from "react-redux";
 
 const NavLinks = ({ linksLayout, bgColor, handleNavButton }) => {
-
+  const authData = useSelector((state) => state.authData);
+  const role = authData.userRole
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -31,34 +33,48 @@ const NavLinks = ({ linksLayout, bgColor, handleNavButton }) => {
     <>
       {navLinks.map((link, index) => (
         link.label !== 'MainDoctor' ? (
-          <li key={index} className={`${linksLayout === 'halfPage' && 'group w-full'}`
-          } >
-            <NavLink
-              to={link.path}
-              onClick={handleNavButton}
-              className={`text-base ${linkStyle} ${linkColor} transition-all duration-500`}
-            >
-              {link.label}
-            </NavLink>
-          </li>
+          (role !== 'admin' && link.label !== 'Admin') ? (
+            <li key={index} className={`${linksLayout === 'halfPage' && 'group w-full'}`
+            } >
+              <NavLink
+                to={link.path}
+                onClick={handleNavButton}
+                className={`text-base ${linkStyle} ${linkColor} transition-all duration-500`}
+              >
+                {link.label}
+              </NavLink>
+            </li>
+          ) : role === 'admin' ? (
+            <li key={index} className={`${linksLayout === 'halfPage' && 'group w-full'}`
+            } >
+              <NavLink
+                to={link.path}
+                onClick={handleNavButton}
+                className={`text-base ${linkStyle} ${linkColor} transition-all duration-500`}
+              >
+                {link.label}
+              </NavLink>
+            </li>
+          ) : ('')
         ) : (
-          <li key={index} className={`${linksLayout === 'halfPage' && 'group w-full'}`}>
-            <button onClick={toggleDropdown} className={`flex items-center gap-2 text-base transition-all duration-500 relative font-bold ${linkColor}`}>
-              MainDoctor <MdKeyboardArrowDown className="text-xl"/>
-            </button>
-            {isDropdownOpen && (
-              <div id="dropdown" className={`absolute z-[100] divide-y divide-gray-100 rounded-lg w-44 shadow-lg font-semibold ${dropdownStyle}`}>
-                <ul className="py-2 text-sm">
-                  <li>
-                    <Link to="/mainDoctor" onClick={toggleDropdown} className={`block px-4 py-2 ${secLinkStyle}`}>Appointments</Link>
-                  </li>
-                  <li>
-                    <Link to="/mainDoctor/patientRecords" onClick={toggleDropdown} className={`block px-4 py-2 ${secLinkStyle}`}>Patient Records</Link>
-                  </li>
-                </ul>
-              </div>
-            )}
-          </li>
+          (role !== 'admin' && link.label !== 'MainDoctor') ? (
+            <li key={index} className={`${linksLayout === 'halfPage' && 'group w-full'}`}>
+              <button onClick={toggleDropdown} className={`flex items-center gap-2 text-base transition-all duration-500 relative font-bold ${linkColor}`}>
+                MainDoctor <MdKeyboardArrowDown className="text-xl" />
+              </button>
+              {isDropdownOpen && (
+                <div id="dropdown" className={`absolute z-[100] divide-y divide-gray-100 rounded-lg w-44 shadow-lg font-semibold ${dropdownStyle}`}>
+                  <ul className="py-2 text-sm">
+                    <li>
+                      <Link to="/mainDoctor/appointment" onClick={toggleDropdown} className={`block px-4 py-2 ${secLinkStyle}`}>Appointments</Link>
+                    </li>
+                    <li>
+                      <Link to="/mainDoctor/patientRecords" onClick={toggleDropdown} className={`block px-4 py-2 ${secLinkStyle}`}>Patient Records</Link>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </li>) : ('')
         )
       ))}
     </>
