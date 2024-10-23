@@ -57,7 +57,7 @@ const NavLinks = ({ linksLayout, bgColor, handleNavButton }) => {
             </li>
           ) : ('')
         ) : (
-          (role !== 'admin' && link.label !== 'MainDoctor') ? (
+          (role === 'doctor'  && link.label === 'MainDoctor') ? (
             <li key={index} className={`${linksLayout === 'halfPage' && 'group w-full'}`}>
               <button onClick={toggleDropdown} className={`flex items-center gap-2 text-base transition-all duration-500 relative font-bold ${linkColor}`}>
                 MainDoctor <MdKeyboardArrowDown className="text-xl" />

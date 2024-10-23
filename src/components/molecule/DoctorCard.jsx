@@ -7,10 +7,12 @@ const DoctorCard = ({
   altText,
   university,
   specialization,
-  workTime,
+  startTime,
+  endTime,
   doctorName,
   delay,
-  duration
+  duration,
+  onButtonClick
 }) => {
   return (
     <div
@@ -33,10 +35,13 @@ const DoctorCard = ({
             Specialized in <span className="font-semibold">{specialization}</span>
           </p>
           <p className="text-sm 2xmobile:text-2xl lg:text-base xl:text-lg opacity-0 group-hover:opacity-100 transition-all duration-500">
-            Clinic Hours: <span className="font-semibold">{workTime}</span>
+            Start Time: <span className="font-semibold">{startTime}</span>
+          </p>
+          <p className="text-sm 2xmobile:text-2xl lg:text-base xl:text-lg opacity-0 group-hover:opacity-100 transition-all duration-500">
+            End Time: <span className="font-semibold">{endTime}</span>
           </p>
           <div className='group/button w-3/5 mx-auto mt-24'>
-            <button type='button' className='group/button border-4 border-[#0E384C] rounded text-xl text-[#0E384C] w-full font-bold  relative overflow-hidden'>
+            <button type='button' onClick={onButtonClick} className='group/button border-4 border-[#0E384C] rounded text-xl text-[#0E384C] w-full font-bold  relative overflow-hidden'>
               <div className='bg-[#0E384C] w-0 h-full group-hover/button:w-full absolute transition-all duration-300'></div>
               <p className='relative m-2 transition-all duration-300 group-hover/button:text-white z-10'>Book now</p>
             </button>

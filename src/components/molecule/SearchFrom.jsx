@@ -41,16 +41,14 @@ const SearchForm = () => {
         value={formik.values.specialty}
       >
         <option value="" label="Choose Dental Specialty" />
-        <option value="General Dentistry" label="General Dentistry" />
-        <option value="Orthodontics" label="Orthodontics" />
-        <option value="Periodontics" label="Periodontics" />
-        <option value="Endodontics" label="Endodontics" />
-        <option value="Prosthodontics" label="Prosthodontics" />
-        <option value="Oral and Maxillofacial Surgery" label="Oral and Maxillofacial Surgery" />
+        <option value="Orthodontist" label="Orthodontist" />
+        <option value="Oral Pathologist" label="Oral Pathologist" />
+        <option value="Cosmetic Dentist" label="Cosmetic Dentist" />
+        <option value="Periodontist" label="Periodontist" />
+        <option value="Endodontist" label="Endodontist" />
+        <option value="Oral Surgeon" label="Oral Surgeon" />
         <option value="Pediatric Dentistry" label="Pediatric Dentistry" />
-        <option value="Oral Pathology" label="Oral Pathology" />
-        <option value="Oral Radiology" label="Oral Radiology" />
-        <option value="Dental Public Health" label="Dental Public Health" />
+        <option value="Pediatric Dentist" label="Pediatric Dentist" />
       </select>
 
       <button type="submit" className="p-4 bg-sky-600 rounded-md text-white font-medium hover:bg-sky-700 transition-all duration-500">

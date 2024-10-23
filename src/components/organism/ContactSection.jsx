@@ -1,16 +1,29 @@
 import { useFormik } from "formik";
 import contact from "../../assets/images/contact-us-img.jpg"
+import { sendContact } from "../../api/endpoints/contact";
+import { toast } from "react-toastify";
 const ContactForm = () => {
   const formik = useFormik({
     initialValues: {
       name: "",
       email: "",
-      phoneNumber: "",
+      phone: "",
       subject: "",
       message: "",
     },
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      try {
+        const response = await sendContact(values);
+        console.log(response)
+        if (response.status === 200) {
+          toast.success('Appointment successfully added!');
+        } else {
+          toast.error('Error adding appointment');
+        }
+      } catch (error) {
+        toast.error('Error adding appointment');
+        console.error('There was an error!', error);
+      }
     },
   });
 
@@ -49,10 +62,10 @@ const ContactForm = () => {
             />
             <input
               type="text"
-              name="phoneNumber"
+              name="phone"
               placeholder="Phone Number"
               className="p-4 border rounded-lg w-full"
-              value={formik.values.phoneNumber}
+              value={formik.values.phone}
               onChange={formik.handleChange}
             />
             <input

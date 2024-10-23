@@ -7,7 +7,6 @@ import { useState, useEffect } from "react";
 export default function ProtectdRoute({ element, path }) {
   const authData = useSelector((state) => state.authData);
   const { accessToken, userRole } = authData;
-console.log(userRole)
   const [lastToastTime, setLastToastTime] = useState(0);
   const [navigatePath, setNavigatePath] = useState(null);
 

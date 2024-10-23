@@ -13,7 +13,12 @@ const LogInForm = () => {
   const callLogIn = async (loginData) => {
     try {
       const response = await logIn(loginData);
-      return response;
+      console.log(response)
+      if (response.data.success) {
+        return response;
+      } else {
+        return { error: "Login failed. Please try again." };
+      }
     } catch (error) {
       toast.error("Login failed:", error);
       return { error: "Login failed. Please try again." };
@@ -36,10 +41,11 @@ const LogInForm = () => {
       if (response.error) {
         toast.error(response.error || 'Login failed. Please try again.');
       } else {
-        toast.success(response.data.message);
+        toast.success(response.data.message)
+        
         dispatch(saveAuthData({
           accessToken: response.data.accessToken,
-          userId: response.data.userData,
+          userData: response.data.userData,
           userRole: response.data.userRole,
         }));
         navigate('/');

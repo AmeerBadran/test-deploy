@@ -14,6 +14,10 @@ export const addDoctor = (doctorData) => {
   });
 };
 
+export const getDoctorsCount = () => {
+  return axiosInstance.get(`/count/countDoctor`);;
+}
+
 export const getDoctors = () => {
   return axiosInstance.get('/get/doctors/1/4');;
 }

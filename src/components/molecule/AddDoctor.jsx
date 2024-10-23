@@ -3,6 +3,10 @@ import { useState } from 'react';
 import { useFormik } from 'formik';
 import { LuUploadCloud } from "react-icons/lu";
 import { addDoctor } from '../../api/endpoints/doctors';
+import { toast } from 'react-toastify';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import Chip from '@mui/material/Chip';
 
 const ImageUpload = ({ setFieldValue }) => {
   const [imagePreview, setImagePreview] = useState('');
@@ -53,6 +57,9 @@ const ImageUpload = ({ setFieldValue }) => {
 };
 
 const DoctorForm = () => {
+  const [selectedDays, setSelectedDays] = useState([]);
+  const daysOptions = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
   const formik = useFormik({
     initialValues: {
       last_Name: '',
@@ -68,17 +75,21 @@ const DoctorForm = () => {
       password: '',
       country: '',
       city: '',
-      workTime: '',
-      postalCode: '', // Not used in the backend, can be removed if not required
+      postalCode: '',
+      StartTime: '',
+      EndTime: '',
+      DaysWork: [],
       avatar: null,
     },
     onSubmit: async (values) => {
+      values.DaysWork = selectedDays;
       try {
+        console.log(values)
         await addDoctor(values);
-        alert('Doctor created successfully');
+        toast.success('Doctor created successfully');
+        // eslint-disable-next-line no-unused-vars
       } catch (error) {
-        console.error('Error creating doctor:', error);
-        alert('Failed to create doctor');
+        toast.error('Failed to create doctor');
       }
     },
   });
@@ -172,13 +183,22 @@ const DoctorForm = () => {
           <label htmlFor="specialization" className="block text-sm font-medium text-gray-700">
             Specialization:
           </label>
-          <input
+          <select
             id="specialization"
             name="specialization"
-            type="text"
             {...formik.getFieldProps('specialization')}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
-          />
+            className="mt-1 block w-full border border-gray-300 text-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
+          >
+            <option value="" label="Choose Dental Specialty" />
+            <option value="Orthodontist" label="Orthodontist" />
+            <option value="Oral Pathologist" label="Oral Pathologist" />
+            <option value="Cosmetic Dentist" label="Cosmetic Dentist" />
+            <option value="Periodontist" label="Periodontist" />
+            <option value="Endodontist" label="Endodontist" />
+            <option value="Oral Surgeon" label="Oral Surgeon" />
+            <option value="Pediatric Dentistry" label="Pediatric Dentistry" />
+            <option value="Pediatric Dentist" label="Pediatric Dentist" />
+          </select>
         </div>
         <div className="mt-4 col-span-1 2xmobile:col-span-2 md:col-span-3">
           <label htmlFor="description" className="block text-sm font-medium text-gray-700">
@@ -217,6 +237,7 @@ const DoctorForm = () => {
             id="email"
             name="email"
             type="email"
+            placeholder='your email should start with dr.'
             {...formik.getFieldProps('email')}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
           />
@@ -261,19 +282,6 @@ const DoctorForm = () => {
           />
         </div>
         <div>
-          <label htmlFor="workTime" className="block text-sm font-medium text-gray-700">
-            WorkTime:
-          </label>
-          <input
-            id="workTime"
-            name="workTime"
-            placeholder='Like "8:00 AM - 2:00 PM"'
-            type="text"
-            {...formik.getFieldProps('workTime')}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
-          />
-        </div>
-        <div>
           <label htmlFor="postalCode" className="block text-sm font-medium text-gray-700">
             Postal Code:
           </label>
@@ -285,7 +293,73 @@ const DoctorForm = () => {
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
           />
         </div>
+        <div>
+          <label htmlFor="StartTime" className="block text-sm font-medium text-gray-700">
+            Start Time:
+          </label>
+          <input
+            id="StartTime"
+            name="StartTime"
+            type="time"
+            step="60"
+            {...formik.getFieldProps('StartTime')}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="EndTime" className="block text-sm font-medium text-gray-700">
+            End Time:
+          </label>
+          <input
+            id="EndTime"
+            name="EndTime"
+            type="time"
+            step="60"
+            {...formik.getFieldProps('EndTime')}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
+          />
+        </div>
+
+        <div className="col-span-2 md:col-span-3">
+          <label htmlFor="DaysWork" className="block text-sm font-medium text-gray-700">
+            Days of Work:
+          </label>
+          <Autocomplete
+            multiple
+            id="DaysWork"
+            options={daysOptions}
+            value={selectedDays}
+            onChange={(event, newValue) => {
+              setSelectedDays(newValue);
+            }}
+            freeSolo
+            renderTags={(value, getTagProps) =>
+              value.map((option, index) => (
+                <Chip
+                  key={index}
+                  label={option}
+                  {...getTagProps({ index })}
+                  onDelete={() => {
+                    setSelectedDays((prev) =>
+                      prev.filter((item) => item !== option)
+                    );
+                  }}
+                />
+              ))
+            }
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                placeholder="Select working days"
+              />
+            )}
+          />
+        </div>
       </div>
+
+
       <h1 className='mb-8 mt-16 text-xl font-bold text-[#0E394D]'>Profile Image</h1>
       <ImageUpload setFieldValue={formik.setFieldValue} />
 

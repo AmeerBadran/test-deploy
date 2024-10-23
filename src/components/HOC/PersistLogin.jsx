@@ -15,10 +15,10 @@ export default function PersistLogin() {
                 const response = await refresh();
                 dispatch(saveAuthData({
                     accessToken: response.data.accessToken,
-                    userId: response.data.userData,
+                    userData: response.data.userData,
                     userRole: response.data.userRole,
                 }));
-            // eslint-disable-next-line no-unused-vars
+                // eslint-disable-next-line no-unused-vars
             } catch (error) {
                 /* */
             } finally {
