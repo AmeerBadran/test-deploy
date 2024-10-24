@@ -28,3 +28,8 @@ export const deleteAppointment = (id) => {
   return axiosInstance.delete(`/delete/appointment/${id}`);
 }
 
+export const doneAppointment = (id) => {
+  return axiosInstance.post(`/add/addMedTDelApp/${id}`);
+}
+
+

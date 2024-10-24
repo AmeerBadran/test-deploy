@@ -1,15 +1,18 @@
 /* eslint-disable react/prop-types */
-import { FaEye, FaTrashAlt } from 'react-icons/fa';
+import { FaCheck, FaEye, FaTrashAlt } from 'react-icons/fa';
 import { IoTime } from 'react-icons/io5';
 import { MdDateRange } from 'react-icons/md';
 import { PiNotebookDuotone } from 'react-icons/pi';
 
-const AppointmentTableRow = ({ item, onDelete }) => {
+const AppointmentTableRow = ({ item, onDelete, doneAppointment }) => {
   const handleDelete = () => {
     onDelete(item._id);
   };
   return (
     <tr>
+      <td className="p-3 flex justify-center items-center">
+        <button type="button" onClick={doneAppointment} className='w-8 h-8 rounded-md hover:bg-green-700 bg-green-600 flex justify-center items-center'><FaCheck className='text-white' /></button>
+      </td>
       <td className="p-3">
         <h1 className="font-bold">{item.name}</h1>
         <div className="flex gap-3 text-gray-600 text-sm">
@@ -28,7 +31,7 @@ const AppointmentTableRow = ({ item, onDelete }) => {
         </div>
       </td>
       <td className="text-red-600 p-3">
-        {item.date}
+        {item.email}
       </td>
       <td className="p-3">
         <div className="flex items-center gap-2 pl-2">

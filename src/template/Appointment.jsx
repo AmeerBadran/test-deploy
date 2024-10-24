@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import PaginationRounded from "../components/molecule/PaginationRounded";
 import Table from "../components/molecule/Table";
 import { useEffect, useState } from "react";
-import { deleteAppointment, getAppointments } from "../api/endpoints/doctorsPage";
+import { deleteAppointment, doneAppointment, getAppointments } from "../api/endpoints/doctorsPage";
 import { countAppointments } from "../api/endpoints/doctorsPage"
 import { toast } from "react-toastify";
 
@@ -14,8 +14,6 @@ export default function Appointment() {
   const handlePageChange = (page) => {
     setPageNumber(page)
   };
-
-  console.log(authData.userId)
 
   useEffect(() => {
     const callAppointments = async (pageNumber, doctorId) => {
@@ -39,12 +37,17 @@ export default function Appointment() {
   const handleDeleteAppointment = async (id) => {
     await deleteAppointment(id);
   };
+
+  const handleDoneAppointment = async (id) => {
+    await doneAppointment(id);
+  };
+
   return (
     <div>
       <h1 className="text-2xl font-bold text-[#0E485E]">
         <span className="text-[#1E84B5]">Appointment</span> management
       </h1>
-      <Table tableData={appointments} onDelete={handleDeleteAppointment} />
+      <Table tableData={appointments} onDelete={handleDeleteAppointment} doneAppointment={handleDoneAppointment} />
       <PaginationRounded count={countNumber} onPageChange={handlePageChange} theme='light' />
     </div>
   )
