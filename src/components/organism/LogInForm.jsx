@@ -5,15 +5,18 @@ import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { logIn } from '../../api/endpoints/auth';
 import { saveAuthData } from '../../features/authData/authDataSlice';
+import { useState } from 'react';
+import ReactLoading from 'react-loading';
 
 const LogInForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   const callLogIn = async (loginData) => {
     try {
       const response = await logIn(loginData);
-      console.log(response)
+      console.log(response);
       if (response.data.success) {
         return response;
       } else {
@@ -23,26 +26,28 @@ const LogInForm = () => {
       toast.error("Login failed:", error);
       return { error: "Login failed. Please try again." };
     }
-  }
+  };
+
   const formik = useFormik({
     initialValues: {
       email: '',
       password: '',
     },
     validationSchema: Yup.object({
-      email: Yup.string()
-        .required('Required'),
+      email: Yup.string().required('Required'),
       password: Yup.string()
         .max(20, 'Must be 20 characters or less')
         .required('Required'),
     }),
     onSubmit: async (values) => {
+      setLoading(true);  // Start loading
       const response = await callLogIn(values);
+      setLoading(false);  // Stop loading
+
       if (response.error) {
         toast.error(response.error || 'Login failed. Please try again.');
       } else {
-        toast.success(response.data.message)
-        
+        toast.success(response.data.message);
         dispatch(saveAuthData({
           accessToken: response.data.accessToken,
           userData: response.data.userData,
@@ -87,12 +92,14 @@ const LogInForm = () => {
             <p className="text-red-500 text-sm mt-1">{formik.errors.password}</p>
           ) : null}
         </div>
+
         <div className='flex justify-between text-center mt-4'>
           <button
             type="submit"
-            className=" w-36 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="w-36 flex justify-center items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            disabled={loading}  // Disable button while loading
           >
-            Submit
+            {loading ? <ReactLoading type="spin" color="#fff" height={20} width={20} /> : 'Submit'}
           </button>
           <button type='button' className='text-blue-500 text-sm hover:text-blue-700'>forget password?</button>
         </div>

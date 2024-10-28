@@ -4,6 +4,7 @@ import PageHeader from "../components/molecule/PageHeader"
 import PaginationRounded from "../components/molecule/PaginationRounded"
 import { getDoctors2, getDoctorsCount } from "../api/endpoints/doctors";
 import AppointmentModal from "../components/organism/AppointmentModal";
+import ReactLoading from "react-loading";
 
 export default function Doctors() {
 
@@ -13,16 +14,21 @@ export default function Doctors() {
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [selectedDoctorDays, setSelectedDoctorDays] = useState(null);
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     const fetchDoctors = async (pageNumber) => {
       try {
+        setLoading(true);
         const respons = await getDoctors2(pageNumber);
         const respons2 = await getDoctorsCount();
         setDoctors(respons.data);
         setDoctorCount(Math.ceil(respons2.data.count / 8))
       } catch (error) {
         console.error("Error fetching doctors:", error);
+      } finally {
+        setLoading(false)
       }
     };
 
@@ -61,27 +67,37 @@ export default function Doctors() {
           <h2 className="my-7 text-3xl font-extrabold"><span className="text-[#9dcbdf]">Book</span> with us</h2>
           <p className="text-[#cce2ee]">We are committed to sustainability. eco-friendly initiatives.</p>
         </div>
-        <div className="max-w-[1300px] mx-auto grid lg:grid-cols-4 md:grid-cols-2 gap-7 gap-y-20">
-          {doctors.map((doctor, index) => (
-            <DoctorCard
-              key={doctor._id}
-              imageSrc={doctor.avatar}
-              altText={`Doctor ${doctor.first_Name} ${doctor.last_Name}`}
-              university={doctor.qualification}
-              specialization={doctor.specialization}
-              startTime={doctor.StartTime}
-              endTime={doctor.EndTime}
-              daysWork={doctor.DaysWork}
-              doctorName={`Dr. ${doctor.first_Name} ${doctor.last_Name}`}
-              delay={index * 200}
-              duration="1500"
-              onButtonClick={() => handleOpenModal(doctor._id, doctor.DaysWork)}
-            />
-          ))}
-        </div>
-        <div className="flex justify-center mt-4">
-          <PaginationRounded count={doctorCount} onPageChange={handlePageChange} theme='dark' />
-        </div>
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <ReactLoading type="spin" color="#ffffff" height={50} width={50} />
+          </div>
+        ) : (
+          <>
+            <div className="max-w-[1300px] mx-auto grid lg:grid-cols-4 md:grid-cols-2 gap-7 gap-y-20">
+              {doctors.map((doctor, index) => (
+                <DoctorCard
+                  key={doctor._id}
+                  imageSrc={doctor.avatar}
+                  altText={`Doctor ${doctor.first_Name} ${doctor.last_Name}`}
+                  university={doctor.qualification}
+                  specialization={doctor.specialization}
+                  startTime={doctor.StartTime}
+                  endTime={doctor.EndTime}
+                  daysWork={doctor.DaysWork}
+                  doctorName={`Dr. ${doctor.first_Name} ${doctor.last_Name}`}
+                  delay={index * 200}
+                  duration="1500"
+                  onButtonClick={() => handleOpenModal(doctor._id, doctor.DaysWork)}
+                  bookButton={true}
+                />
+              ))}
+            </div>
+            <div className="flex justify-center mt-4">
+              <PaginationRounded count={doctorCount} onPageChange={handlePageChange} theme='dark' />
+            </div>
+          </>
+        )}
+
       </div>
       {isModalOpen && <AppointmentModal doctorId={selectedDoctor} handleCloseModal={handleCloseModal} daysWork={selectedDoctorDays} doctorStartTime={"09:00"} doctorEndTime={"17:00"} />}
     </div>

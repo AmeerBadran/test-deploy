@@ -30,7 +30,7 @@ export default function PersistLogin() {
 
     return loading ? (
         <div className="w-screen h-screen flex justify-center items-center">
-            <ReactLoading type='balls' color="black" height={200} width={110} />
+            <ReactLoading type='spin' color="#1E84B5" height={200} width={110} />
         </div>
     ) : (
         <Outlet />

@@ -19,9 +19,9 @@ const MainDoctor = () => {
             </h1>
           </div>
           <div className="w-full">
-            <Link to="">
+            <Link to="appointment">
               <div
-                className={`p-4 ${location.pathname === "/mainDoctor"
+                className={`p-4 ${location.pathname === "/mainDoctor/appointment"
                   ? "bg-[#0E485E33] hover:bg-[#0E485E44] border-l-4 shadow-inner shadow-[#0E485E44] border-[#0E485E]"
                   : "hover:bg-[#0E485E33]"
                   } text-lg font-semibold text-[#0E485E] transition-all duration-300`}

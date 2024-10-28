@@ -1,4 +1,5 @@
 import heroImg from "../assets/images/hero-img.png"
+import ReactLoading from 'react-loading'
 import AuthButton from "../components/atoms/AuthBotton"
 import { PiStarFourFill } from "react-icons/pi";
 import { IoSearchSharp } from "react-icons/io5";
@@ -15,15 +16,18 @@ AOS.init();
 export default function Home() {
   const [openSearch, setOpenSearch] = useState(false);
   const [doctors, setDoctors] = useState([]);
-
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
+        setLoading(true)
         const respons = await getDoctors();
         setDoctors(respons.data);
       } catch (error) {
         console.error("Error fetching doctors:", error);
+      } finally {
+        setLoading(false)
       }
     };
 
@@ -61,21 +65,29 @@ export default function Home() {
           <h1 className="my-7 text-6xl font-extrabold"><span className="text-[#9dcbdf]">Our Friendly</span> Dentists Team</h1>
           <p className="text-[#cce2ee]">We are committed to sustainability. eco-friendly initiatives.</p>
         </div>
-        <div className="max-w-[1300px] mx-auto grid lg:grid-cols-4 md:grid-cols-2 gap-7">
-          {doctors.map((doctor, index) => (
-            <DoctorCard
-              key={doctor._id}
-              imageSrc={doctor.avatar}
-              altText={`Doctor ${doctor.first_Name} ${doctor.last_Name}`}
-              university={doctor.qualification}
-              specialization={doctor.specialization}
-              workTime={doctor.workTime}
-              doctorName={`Dr. ${doctor.first_Name} ${doctor.last_Name}`}
-              delay={index * 200}
-              duration="1500"
-            />
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <ReactLoading type="spin" color="#ffffff" height={50} width={50} />
+          </div>
+        ) : (
+          <div className="max-w-[1300px] mx-auto grid lg:grid-cols-4 md:grid-cols-2 gap-7">
+            {doctors.map((doctor, index) => (
+              <DoctorCard
+                key={doctor._id}
+                imageSrc={doctor.avatar}
+                altText={`Doctor ${doctor.first_Name} ${doctor.last_Name}`}
+                university={doctor.qualification}
+                specialization={doctor.specialization}
+                workTime={doctor.workTime}
+                doctorName={`Dr. ${doctor.first_Name} ${doctor.last_Name}`}
+                delay={index * 200}
+                duration="1500"
+                bookButton={false}
+              />
+            ))}
+          </div>
+        )}
+
       </div>
     </div>
   )

@@ -14,9 +14,8 @@ const ContactForm = () => {
     onSubmit: async (values) => {
       try {
         const response = await sendContact(values);
-        console.log(response)
         if (response.status === 200) {
-          toast.success('Appointment successfully added!');
+          toast.success('Send Message!');
         } else {
           toast.error('Error adding appointment');
         }
