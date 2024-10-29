@@ -1,13 +1,42 @@
 import { useFormik } from 'formik';
+import { useEffect, useState } from 'react';
+import { doctorsSearch, searchValues as fetchSearchValues } from '../../api/endpoints/doctors';
+import { toast } from 'react-toastify';
 
-const SearchForm = () => {
+// eslint-disable-next-line react/prop-types
+const SearchForm = ({ setDoctors }) => {
+  const [searchValues, setSearchValues] = useState({ cities: [], specializations: [] });
+
+  useEffect(() => {
+    const getSearchValues = async () => {
+      try {
+        const response = await fetchSearchValues();
+        console.log(response.data);
+        setSearchValues(response.data);
+        // eslint-disable-next-line no-unused-vars
+      } catch (error) {
+        toast.error('Server error 500');
+      }
+    };
+
+    getSearchValues();
+  }, []);
+
   const formik = useFormik({
     initialValues: {
       city: '',
       specialty: '',
     },
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      try {
+        const response = await doctorsSearch(values)
+        console.log(response)
+        setDoctors(response.data)
+        // eslint-disable-next-line no-unused-vars
+      } catch (error) {
+        console.log(values)
+        toast.error('Not Found')
+      }
     },
   });
 
@@ -22,14 +51,9 @@ const SearchForm = () => {
         value={formik.values.city}
       >
         <option value="" label="Choose City" />
-        <option value="Ramallah" label="Ramallah" />
-        <option value="Nablus" label="Nablus" />
-        <option value="Jenin" label="Jenin" />
-        <option value="Tulkarm" label="Tulkarm" />
-        <option value="Salfit" label="Salfit" />
-        <option value="Hebron" label="Hebron" />
-        <option value="Bethlehem" label="Bethlehem" />
-        <option value="Al-Bireh" label="Al-Bireh" />
+        {searchValues.cities.map((city, index) => (
+          <option key={index} value={city} label={city} />
+        ))}
       </select>
 
       <select
@@ -41,14 +65,9 @@ const SearchForm = () => {
         value={formik.values.specialty}
       >
         <option value="" label="Choose Dental Specialty" />
-        <option value="Orthodontist" label="Orthodontist" />
-        <option value="Oral Pathologist" label="Oral Pathologist" />
-        <option value="Cosmetic Dentist" label="Cosmetic Dentist" />
-        <option value="Periodontist" label="Periodontist" />
-        <option value="Endodontist" label="Endodontist" />
-        <option value="Oral Surgeon" label="Oral Surgeon" />
-        <option value="Pediatric Dentistry" label="Pediatric Dentistry" />
-        <option value="Pediatric Dentist" label="Pediatric Dentist" />
+        {searchValues.specializations.map((specialty, index) => (
+          <option key={index} value={specialty} label={specialty} />
+        ))}
       </select>
 
       <button type="submit" className="p-4 bg-sky-600 rounded-md text-white font-medium hover:bg-sky-700 transition-all duration-500">

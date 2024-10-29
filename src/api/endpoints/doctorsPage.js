@@ -32,10 +32,10 @@ export const doneAppointment = (id) => {
   return axiosInstance.post(`/add/addMedTDelApp/${id}`);
 }
 
-export const addRecord = (values) => {
-  console.log(values)
-  return axiosInstance.put(`/update/medication/`, values);
+export const addRecord = (medicationId, visitData) => {
+
+  visitData.id = Math.floor(Math.random() * 10000) + 1;
+  console.log(medicationId, visitData)
+  return axiosInstance.post(`/add/addVisit`, { medicationId, visitData });
 }
-
-
 

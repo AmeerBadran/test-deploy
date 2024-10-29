@@ -23,6 +23,7 @@ export default function Doctors() {
         setLoading(true);
         const respons = await getDoctors2(pageNumber);
         const respons2 = await getDoctorsCount();
+        console.log(respons.data)
         setDoctors(respons.data);
         setDoctorCount(Math.ceil(respons2.data.count / 8))
       } catch (error) {
@@ -72,32 +73,29 @@ export default function Doctors() {
             <ReactLoading type="spin" color="#ffffff" height={50} width={50} />
           </div>
         ) : (
-          <>
-            <div className="max-w-[1300px] mx-auto grid lg:grid-cols-4 md:grid-cols-2 gap-7 gap-y-20">
-              {doctors.map((doctor, index) => (
-                <DoctorCard
-                  key={doctor._id}
-                  imageSrc={doctor.avatar}
-                  altText={`Doctor ${doctor.first_Name} ${doctor.last_Name}`}
-                  university={doctor.qualification}
-                  specialization={doctor.specialization}
-                  startTime={doctor.StartTime}
-                  endTime={doctor.EndTime}
-                  daysWork={doctor.DaysWork}
-                  doctorName={`Dr. ${doctor.first_Name} ${doctor.last_Name}`}
-                  delay={index * 200}
-                  duration="1500"
-                  onButtonClick={() => handleOpenModal(doctor._id, doctor.DaysWork)}
-                  bookButton={true}
-                />
-              ))}
-            </div>
-            <div className="flex justify-center mt-4">
-              <PaginationRounded count={doctorCount} onPageChange={handlePageChange} theme='dark' />
-            </div>
-          </>
+          <div className="max-w-[1300px] mx-auto grid lg:grid-cols-4 md:grid-cols-2 gap-7 gap-y-20">
+            {doctors.map((doctor, index) => (
+              <DoctorCard
+                key={doctor._id}
+                imageSrc={doctor.avatar}
+                altText={`Doctor ${doctor.first_Name} ${doctor.last_Name}`}
+                university={doctor.qualification}
+                specialization={doctor.specialization}
+                startTime={doctor.StartTime}
+                endTime={doctor.EndTime}
+                daysWork={doctor.DaysWork}
+                doctorName={`Dr. ${doctor.first_Name} ${doctor.last_Name}`}
+                delay={index * 200}
+                duration="1500"
+                onButtonClick={() => handleOpenModal(doctor._id, doctor.DaysWork)}
+                bookButton={true}
+              />
+            ))}
+          </div>
         )}
-
+        <div className="flex justify-center mt-4">
+          <PaginationRounded count={doctorCount} onPageChange={handlePageChange} theme='dark' />
+        </div>
       </div>
       {isModalOpen && <AppointmentModal doctorId={selectedDoctor} handleCloseModal={handleCloseModal} daysWork={selectedDoctorDays} doctorStartTime={"09:00"} doctorEndTime={"17:00"} />}
     </div>

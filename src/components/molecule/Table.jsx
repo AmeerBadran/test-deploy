@@ -15,11 +15,12 @@ export default function Table({ tableData, onDelete, tableType }) {
   };
   const closeModal = () => setModalOpen(false);
 
-
   const handleDoneAppointment = async (id) => {
     console.log(id);
     await doneAppointment(id);
   };
+
+
 
   const headers = {
     appointment: ['Check Done', 'Reservations', 'Date', 'Condition'],

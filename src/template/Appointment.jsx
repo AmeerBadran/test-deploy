@@ -40,7 +40,7 @@ export default function Appointment() {
       await deleteAppointment(id);
       setAppointments(appointments.filter((appointment) => appointment.id !== id));
       toast.success("Appointment deleted successfully");
-    // eslint-disable-next-line no-unused-vars
+      // eslint-disable-next-line no-unused-vars
     } catch (error) {
       toast.error("Failed to delete appointment");
     }
@@ -56,11 +56,9 @@ export default function Appointment() {
           <ReactLoading type="spin" color="#1E84B5" height={50} width={50} />
         </div>
       ) : (
-        <>
-          <Table tableData={appointments} onDelete={handleDeleteAppointment} tableType={'appointment'} />
-          <PaginationRounded count={countNumber} onPageChange={handlePageChange} theme='light' />
-        </>
+        <Table tableData={appointments} onDelete={handleDeleteAppointment} tableType={'appointment'} />
       )}
+      <PaginationRounded count={countNumber} onPageChange={handlePageChange} theme='light' />
     </div>
   );
 }

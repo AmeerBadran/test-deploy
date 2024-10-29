@@ -34,6 +34,8 @@ export default function Home() {
     fetchDoctors();
   }, []);
 
+
+
   const handleButtonClick = () => {
     setOpenSearch(!openSearch); // Toggle the openSearch state
   };
@@ -49,7 +51,7 @@ export default function Home() {
             <AuthButton label="Click here to find a doctor" icon={IoSearchSharp} roundedPosition="full" bgType="light" onClick={handleButtonClick} />
           </div>
           <div className={`${openSearch ? 'p-4' : 'h-0'} w-full bg-white mt-7 transition-all duration-500 ease-out rounded-md shadow-inner shadow-gray-300 overflow-hidden`}>
-            <SearchForm />
+            <SearchForm setDoctors={setDoctors} />
 
           </div>
         </div>

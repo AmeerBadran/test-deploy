@@ -66,16 +66,13 @@ export default function PatientRecords() {
           <ReactLoading type="spin" color="#1E84B5" height={50} width={50} />
         </div>
       ) : (
-        <>
-          <Table
-            tableData={reportData}
-            onDelete={handleDeleteAppointment}
-            tableType="records"
-          />
-          <PaginationRounded count={dataCount} onPageChange={handlePageChange} theme="light" />
-        </>
+        <Table
+          tableData={reportData}
+          onDelete={handleDeleteAppointment}
+          tableType="records"
+        />
       )}
-
+      <PaginationRounded count={dataCount} onPageChange={handlePageChange} theme="light" />
     </div>
   );
 }
