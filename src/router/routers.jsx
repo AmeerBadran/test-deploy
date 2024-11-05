@@ -18,7 +18,7 @@ import ProtectdRoute from "../components/HOC/withProtect";
 import NotProtectdRoute from "../components/HOC/withNotProtect";
 import PersistLogin from "../components/HOC/PersistLogin";
 import UserProfile from "../pages/UserProfile";
-import UserAppointment from "../template/userAppointment";
+import UserAppointment from "../template/UserAppointment";
 import UserRecords from "../template/UserRecords";
 
 const router = createBrowserRouter([
