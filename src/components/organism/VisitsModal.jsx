@@ -1,16 +1,30 @@
-/* eslint-disable react/prop-types */
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
-import { addRecord } from '../../api/endpoints/doctorsPage';
+import { updateVisit, deleteVisit } from '../../api/endpoints/doctorsPage';
 import { FaRegEdit } from 'react-icons/fa';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MdDelete } from 'react-icons/md';
 
-const VisitsModal = ({ isOpen, onClose, initialRecords = [] }) => {
-  const [records, setRecords] = useState(initialRecords);
-  const [editingIndex, setEditingIndex] = useState(null); // Track which form is being edited
+// eslint-disable-next-line react/prop-types
+const VisitsModal = ({ isOpen, onClose, initialRecords = [], medicationId }) => {
+  const [records, setRecords] = useState([]);
+  const [editingIndex, setEditingIndex] = useState(null);
 
+  const fundeleteVisit = async (visitId) => {
+    try {
+      const response = await deleteVisit(medicationId, visitId);
+      toast.success(response.data.message);
+
+      setRecords(records.filter(record => record._id !== visitId));
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to delete record.');
+    }
+  };
+  useEffect(() => {
+    setRecords(initialRecords);
+  }, [initialRecords]);
   const validationSchema = Yup.object({
     cash: Yup.number().required('Cash is required').min(0, 'Cash must be positive'),
     date: Yup.date().required('Date is required'),
@@ -20,17 +34,19 @@ const VisitsModal = ({ isOpen, onClose, initialRecords = [] }) => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const newRecord = { ...values };
-      console.log(newRecord)
-      await addRecord(newRecord);
+      const newRecord = {
+        ...values,
+        date: new Date(values.date).toISOString().split('T')[0], // Normalize date format to "YYYY-MM-DD"
+      };
+
+      await updateVisit(medicationId, newRecord);
       toast.success('Record updated successfully!');
 
-      // Update records array with new data
       const updatedRecords = [...records];
       updatedRecords[editingIndex] = newRecord;
       setRecords(updatedRecords);
 
-      setEditingIndex(null); // Close editing mode for current form
+      setEditingIndex(null);
       onClose();
     } catch (error) {
       toast.error('Failed to update record.');
@@ -44,13 +60,16 @@ const VisitsModal = ({ isOpen, onClose, initialRecords = [] }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 max-w-screen">
-      <div className="bg-white rounded-lg shadow-lg  max-w-[1300px] m-8 w-full max-h-[90vh] relative">
+      <div className="bg-white rounded-lg shadow-lg max-w-[1300px] m-8 w-full max-h-[90vh] relative">
         <h2 className="text-2xl font-semibold text-center my-6">Medication Records</h2>
-        <div className=' overflow-y-auto max-h-[80vh] p-8'>
+        <div className='overflow-y-auto max-h-[80vh] p-8'>
           {records.map((record, index) => (
             <Formik
               key={record.id || index}
-              initialValues={record}
+              initialValues={{
+                ...record,
+                date: record.date?.split('T')[0] || '',
+              }}
               validationSchema={validationSchema}
               onSubmit={handleSubmit}
               enableReinitialize
@@ -102,7 +121,6 @@ const VisitsModal = ({ isOpen, onClose, initialRecords = [] }) => {
                       <ErrorMessage name="description" component="div" className="text-red-500 text-sm" />
                     </div>
                     <div className="flex flex-col justify-center gap-5 items-center">
-
                       <div className='flex gap-2'>
                         <button
                           type="button"
@@ -114,7 +132,7 @@ const VisitsModal = ({ isOpen, onClose, initialRecords = [] }) => {
                         <button
                           type="button"
                           className="bg-red-500 flex hover:bg-red-600 items-center gap-2 text-white px-4 py-2 rounded"
-                          onClick={() => setEditingIndex(index)}
+                          onClick={() => fundeleteVisit(record._id)}
                         >
                           <MdDelete />
                         </button>

@@ -21,20 +21,19 @@ const MedicationModal = ({ isOpen, onClose, medicationId }) => {
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      await addRecord(medicationId,values);  // Correctly calls addRecord
-
+      await addRecord(medicationId, values);
       toast.success('Medication updated successfully!');
       resetForm();
-      onClose(); // Close modal on success
+      onClose();
     } catch (error) {
-      toast.error('Failed to update medication.');
+      toast.error(error);
       console.error(error);
     } finally {
       setSubmitting(false);
     }
   };
 
-  if (!isOpen) return null; // Don't render the modal if it's closed
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">

@@ -32,10 +32,21 @@ export const doneAppointment = (id) => {
   return axiosInstance.post(`/add/addMedTDelApp/${id}`);
 }
 
+// export const deleteMedication = (id) => {
+//   return axiosInstance.delete(`/delete/addMedTDelApp/${id}`);
+// }
+
 export const addRecord = (medicationId, visitData) => {
   const id = Math.floor(Math.random() * 10000) + 1;
-  const { cash, date, description, note } = visitData
-  console.log(cash, date, description, note)
+  const { cash, date, description, note } = visitData;
   return axiosInstance.post(`/add/addVisit`, { medicationId, id, cash, date, description, note });
 }
 
+export const updateVisit = (medicationId, updatedData) => {
+  const visitId = updatedData._id;
+  return axiosInstance.put(`/update/visits`, { medicationId, visitId, updatedData });
+}
+
+export const deleteVisit = (medicationId, visitId) => {
+  return axiosInstance.delete(`/delete/visit/${medicationId}/${visitId}`);
+}

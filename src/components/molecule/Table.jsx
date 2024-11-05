@@ -4,19 +4,31 @@ import { doneAppointment } from "../../api/endpoints/doctorsPage";
 import MedicationModal from "../organism/MedicationModal";
 import AppointmentTableRow from "./AppointmentTableRow";
 import RecordesTableRow from "./RecordesTableRow";
+import VisitsModal from "../organism/VisitsModal";
 
 export default function Table({ tableData, onDelete, tableType }) {
 
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isModalVisitsOpen, setModalVisitsOpen] = useState(false);
+  const [initialRecords, setInitialRecords] = useState([])
   const [patientId, setPatientId] = useState()
   const openModal = (id) => {
+    setModalVisitsOpen(false)
     setModalOpen(true)
     setPatientId(id)
   };
+
+  const openVisitsModal = (id, records) => {
+    setModalOpen(false)
+    setModalVisitsOpen(true)
+    setPatientId(id)
+    setInitialRecords(records)
+  };
+
   const closeModal = () => setModalOpen(false);
+  const closeVisitsModal = () => setModalVisitsOpen(false);
 
   const handleDoneAppointment = async (id) => {
-    console.log(id);
     await doneAppointment(id);
   };
 
@@ -49,7 +61,7 @@ export default function Table({ tableData, onDelete, tableType }) {
                   doneAppointment={handleDoneAppointment}
                 />
               ) : (
-                <RecordesTableRow key={item._id} item={item} openModal={openModal} />
+                <RecordesTableRow key={item._id} item={item} openModal={openModal} openVisitsModal={openVisitsModal} />
               )
             )}
           </tbody>
@@ -58,10 +70,20 @@ export default function Table({ tableData, onDelete, tableType }) {
       {tableData.length === 0 && (
         <p className="text-2xl font-black text-center my-10">No Data</p>
       )}
-      {tableType === 'records' ? <MedicationModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        medicationId={patientId} />
+      {tableType === 'records' ?
+        <>
+          <MedicationModal
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            medicationId={patientId} />
+
+          <VisitsModal
+            isOpen={isModalVisitsOpen}
+            onClose={closeVisitsModal}
+            initialRecords={initialRecords}
+            medicationId={patientId}
+          />
+        </>
         : <></>}
     </>
   );
