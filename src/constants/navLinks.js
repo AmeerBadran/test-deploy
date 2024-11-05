@@ -4,4 +4,5 @@ export const navLinks = [
   { path: "/contactUs", label: "ContactUs" },
   { path: "/admin", label: "Admin" },
   { path: "/MainDoctor", label: "MainDoctor" },
+  { path: "/userProfile", label: "UserProfile" },
 ];

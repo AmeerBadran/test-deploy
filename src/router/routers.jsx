@@ -17,6 +17,9 @@ import PatientRecords from "../template/PatientRecords";
 import ProtectdRoute from "../components/HOC/withProtect";
 import NotProtectdRoute from "../components/HOC/withNotProtect";
 import PersistLogin from "../components/HOC/PersistLogin";
+import UserProfile from "../pages/UserProfile";
+import UserAppointment from "../template/userAppointment";
+import UserRecords from "../template/UserRecords";
 
 const router = createBrowserRouter([
   {
@@ -39,7 +42,7 @@ const router = createBrowserRouter([
           {
             path: "/contactUs",
             element: (
-              <ProtectdRoute path="/contactUs" element={<ContactUs />} />
+              <ContactUs />
             ),
           },
           {
@@ -61,6 +64,22 @@ const router = createBrowserRouter([
               {
                 path: "patientRecords",
                 element: <PatientRecords />,
+              },
+            ]
+          },
+          {
+            path: "/userProfile",
+            element: (
+              <ProtectdRoute path="/userProfile" element={<UserProfile />} />
+            ),
+            children: [
+              {
+                path: "userAppointment",
+                element: <UserAppointment />,
+              },
+              {
+                path: "userRecords",
+                element: <UserRecords />,
               },
             ]
           },

@@ -80,7 +80,9 @@ export default function Home() {
                 altText={`Doctor ${doctor.first_Name} ${doctor.last_Name}`}
                 university={doctor.qualification}
                 specialization={doctor.specialization}
-                workTime={doctor.workTime}
+                startTime={doctor.StartTime}
+                endTime={doctor.EndTime}
+                daysWork={doctor.DaysWork}
                 doctorName={`Dr. ${doctor.first_Name} ${doctor.last_Name}`}
                 delay={index * 200}
                 duration="1500"

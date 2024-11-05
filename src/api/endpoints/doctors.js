@@ -28,7 +28,7 @@ export const getDoctors2 = (page) => {
 
 export const doctorsSearch = (data) => {
   const { city, specialty } = data;
-  return axiosInstance.get(`/get/search`, { city, specialty });
+  return axiosInstance.post(`/get/search`, { city, specialty });
 };
 
 export const searchValues = () => {

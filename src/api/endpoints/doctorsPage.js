@@ -33,9 +33,9 @@ export const doneAppointment = (id) => {
 }
 
 export const addRecord = (medicationId, visitData) => {
-
-  visitData.id = Math.floor(Math.random() * 10000) + 1;
-  console.log(medicationId, visitData)
-  return axiosInstance.post(`/add/addVisit`, { medicationId, visitData });
+  const id = Math.floor(Math.random() * 10000) + 1;
+  const { cash, date, description, note } = visitData
+  console.log(cash, date, description, note)
+  return axiosInstance.post(`/add/addVisit`, { medicationId, id, cash, date, description, note });
 }
 

@@ -21,6 +21,7 @@ const VisitsModal = ({ isOpen, onClose, initialRecords = [] }) => {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       const newRecord = { ...values };
+      console.log(newRecord)
       await addRecord(newRecord);
       toast.success('Record updated successfully!');
 

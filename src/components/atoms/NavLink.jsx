@@ -32,7 +32,7 @@ const NavLinks = ({ linksLayout, bgColor, handleNavButton }) => {
   return (
     <>
       {navLinks.map((link, index) => (
-        link.label !== 'MainDoctor' ? (
+        link.label !== 'MainDoctor' && link.label !== 'UserProfile' ? (
           (role !== 'admin' && link.label !== 'Admin') ? (
             <li key={index} className={`${linksLayout === 'halfPage' && 'group w-full'}`
             } >
@@ -57,7 +57,7 @@ const NavLinks = ({ linksLayout, bgColor, handleNavButton }) => {
             </li>
           ) : ('')
         ) : (
-          (role === 'doctor'  && link.label === 'MainDoctor') ? (
+          (role === 'doctor' && link.label === 'MainDoctor') ? (
             <li key={index} className={`${linksLayout === 'halfPage' && 'group w-full'}`}>
               <button onClick={toggleDropdown} className={`flex items-center gap-2 text-base transition-all duration-500 relative font-bold ${linkColor}`}>
                 MainDoctor <MdKeyboardArrowDown className="text-xl" />
@@ -74,7 +74,26 @@ const NavLinks = ({ linksLayout, bgColor, handleNavButton }) => {
                   </ul>
                 </div>
               )}
-            </li>) : ('')
+            </li>
+          ) : (role === 'patient' && link.label === 'UserProfile') ? (
+            <li key={index} className={`${linksLayout === 'halfPage' && 'group w-full'}`}>
+              <button onClick={toggleDropdown} className={`flex items-center gap-2 text-base transition-all duration-500 relative font-bold ${linkColor}`}>
+                Profile <MdKeyboardArrowDown className="text-xl" />
+              </button>
+              {isDropdownOpen && (
+                <div id="dropdown" className={`absolute z-[100] divide-y divide-gray-100 rounded-lg w-44 shadow-lg font-semibold ${dropdownStyle}`}>
+                  <ul className="py-2 text-sm">
+                    <li>
+                      <Link to="/userProfile/userAppointment" onClick={toggleDropdown} className={`block px-4 py-2 ${secLinkStyle}`}>Appointments</Link>
+                    </li>
+                    <li>
+                      <Link to="/userProfile/userRecords" onClick={toggleDropdown} className={`block px-4 py-2 ${secLinkStyle}`}>Patient Records</Link>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </li>
+          ) : ('')
         )
       ))}
     </>
