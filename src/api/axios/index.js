@@ -2,7 +2,7 @@ import axios from "axios";
 import { store } from '../../app/store';
 
 const axiosInstance = axios.create({
-  baseURL: 'https://cos-server-9lb9.onrender.com',
+  baseURL: 'https://cos-server-9lb9.onrender.com/api',
   withCredentials: true,
 });
 
