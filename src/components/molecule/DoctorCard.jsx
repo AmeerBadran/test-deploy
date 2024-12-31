@@ -5,7 +5,7 @@ AOS.init();
 const DoctorCard = ({
   imageSrc,
   altText,
-  university,
+  city,
   specialization,
   startTime,
   endTime,
@@ -30,7 +30,7 @@ const DoctorCard = ({
         />
         <div className="absolute origin-bottom-left flex flex-col gap-3 justify-center bottom-0 bg-[#EFF8FFDD] rounded-t-3xl px-4 z-10 h-0 w-full group-hover:h-full transition-all duration-500 text-gray-900 group-hover:py-4 overflow-hidden">
           <p className="text-gray-600 text-sm 2xmobile:text-2xl lg:text-base xl:text-lg font-medium transition-all duration-500">
-            Studied at <span className="font-semibold">{university}</span>
+            Location <span className="font-semibold">{city}</span>
           </p>
           <p className="text-sm 2xmobile:text-2xl lg:text-base xl:text-lg opacity-0 group-hover:opacity-100 transition-all duration-500">
             Specialized in <span className="font-semibold">{specialization}</span>

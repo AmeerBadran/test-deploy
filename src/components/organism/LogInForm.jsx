@@ -16,7 +16,6 @@ const LogInForm = () => {
   const callLogIn = async (loginData) => {
     try {
       const response = await logIn(loginData);
-      console.log(response);
       if (response.data.success) {
         return response;
       } else {

@@ -25,8 +25,9 @@ export default function Appointment() {
         const response2 = await countAppointments(doctorId);
         setAppointments(response.data);
         setCountNumber(Math.ceil(response2.data.count / 6));
+       // eslint-disable-next-line no-unused-vars
       } catch (error) {
-        toast.error(error.message || "Failed to load appointments");
+        //
       } finally {
         setLoading(false); // Stop loading
       }
@@ -38,7 +39,7 @@ export default function Appointment() {
   const handleDeleteAppointment = async (id) => {
     try {
       await deleteAppointment(id);
-      setAppointments(appointments.filter((appointment) => appointment.id !== id));
+      setAppointments(appointments.filter((appointment) => appointment._id !== id));
       toast.success("Appointment deleted successfully");
       // eslint-disable-next-line no-unused-vars
     } catch (error) {

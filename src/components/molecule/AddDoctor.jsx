@@ -84,7 +84,6 @@ const DoctorForm = () => {
     onSubmit: async (values) => {
       values.DaysWork = selectedDays;
       try {
-        console.log(values)
         await addDoctor(values);
         toast.success('Doctor created successfully');
         // eslint-disable-next-line no-unused-vars

@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import PaginationRounded from "../components/molecule/PaginationRounded";
 import { getPatientForRecords } from "../api/endpoints/doctorsPage";
-import { toast } from "react-toastify";
 import Table from "../components/molecule/Table";
 import ReactLoading from "react-loading";
 
 export default function PatientRecords() {
   const [pageNumber, setPageNumber] = useState(1);
   const [reportData, setReportData] = useState([]);
-  const [filter, setFilter] = useState("empty"); // Default empty filter
+  const [filter, setFilter] = useState("empty");
   const [dataCount, setDataCount] = useState(0)
   const [loading, setLoading] = useState(true);
 
@@ -25,12 +24,12 @@ export default function PatientRecords() {
       try {
         setLoading(true);
         const response = await getPatientForRecords(pageNumber, 6, filter);
-        console.log(response.data)
         setDataCount(response.data.pagination.totalPages);
         setReportData(response.data.data);
-
+        console.log(response)
+        // eslint-disable-next-line no-unused-vars
       } catch (error) {
-        toast.error(error.message);
+        setReportData([]);
       } finally {
         setLoading(false)
       }
@@ -58,7 +57,8 @@ export default function PatientRecords() {
           className="border border-gray-300 rounded-md p-2"
         >
           <option value="empty">All</option>
-          <option value="pending">Pending</option>
+          <option value="in_progress ">In Progress </option>
+          <option value="completed">Completed</option>
         </select>
       </div>
       {loading ? (

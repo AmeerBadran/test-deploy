@@ -27,7 +27,6 @@ const MedicationModal = ({ isOpen, onClose, medicationId }) => {
       onClose();
     } catch (error) {
       toast.error(error);
-      console.error(error);
     } finally {
       setSubmitting(false);
     }

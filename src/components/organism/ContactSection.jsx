@@ -19,9 +19,9 @@ const ContactForm = () => {
         } else {
           toast.error('Error adding appointment');
         }
+      // eslint-disable-next-line no-unused-vars
       } catch (error) {
         toast.error('Error adding appointment');
-        console.error('There was an error!', error);
       }
     },
   });

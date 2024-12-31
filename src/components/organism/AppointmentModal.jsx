@@ -47,11 +47,11 @@ const AppointmentModal = ({ doctorId, handleCloseModal, doctorStartTime, daysWor
         toast.warn('Please select a time within the doctor\'s working hours.');
         return;
       }
-      console.log(values)
       try {
         const response = await addAppointment(values);
         console.log(response);
         toast.success('Appointment created successfully');
+        handleCloseModal()
         // eslint-disable-next-line no-unused-vars
       } catch (error) {
         toast.error('Failed to create Appointment');

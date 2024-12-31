@@ -9,6 +9,7 @@ export const getmedications = (page, limit) => {
 export const getPatientForRecords = (page, limit, filter) => {
   const state = store.getState();
   const doctorId = state.authData?.userId;
+  console.log(filter)
   return axiosInstance.get(`get/medications/${doctorId}/${page}/${limit}/${filter}`);
 }
 

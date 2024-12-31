@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import PaginationRounded from "../components/molecule/PaginationRounded";
-import { getPatientForRecords } from "../api/endpoints/doctorsPage";
-import { toast } from "react-toastify";
 import Table from "../components/molecule/Table";
 import ReactLoading from "react-loading";
+import { getUserRecords } from "../api/endpoints/userProfile";
 
 export default function UserRecords() {
   const [pageNumber, setPageNumber] = useState(1);
@@ -20,13 +19,13 @@ export default function UserRecords() {
     const callPatientRecords = async (pageNumber) => {
       try {
         setLoading(true);
-        const response = await getPatientForRecords(pageNumber, 6);
-        console.log(response.data)
+        const response = await getUserRecords(pageNumber, 6);
         setDataCount(response.data.pagination.totalPages);
         setReportData(response.data.data);
 
+        // eslint-disable-next-line no-unused-vars
       } catch (error) {
-        toast.error(error.message);
+        //
       } finally {
         setLoading(false)
       }
@@ -53,6 +52,7 @@ export default function UserRecords() {
           tableData={reportData}
           onDelete={handleDeleteAppointment}
           tableType="records"
+          appType={'user'}
         />
       )}
       <PaginationRounded count={dataCount} onPageChange={handlePageChange} theme="light" />

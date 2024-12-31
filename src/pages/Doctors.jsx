@@ -13,7 +13,6 @@ export default function Doctors() {
   const [doctorCount, setDoctorCount] = useState(1)
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
   const [selectedDoctor, setSelectedDoctor] = useState(null);
-  const [selectedDoctorDays, setSelectedDoctorDays] = useState(null);
   const [loading, setLoading] = useState(true);
 
 
@@ -23,11 +22,11 @@ export default function Doctors() {
         setLoading(true);
         const respons = await getDoctors2(pageNumber);
         const respons2 = await getDoctorsCount();
-        console.log(respons.data)
         setDoctors(respons.data);
         setDoctorCount(Math.ceil(respons2.data.count / 8))
+       // eslint-disable-next-line no-unused-vars
       } catch (error) {
-        console.error("Error fetching doctors:", error);
+        //
       } finally {
         setLoading(false)
       }
@@ -40,9 +39,8 @@ export default function Doctors() {
     setPageNumber(page)
   };
 
-  const handleOpenModal = (doctor, days) => {
+  const handleOpenModal = (doctor) => {
     setSelectedDoctor(doctor);
-    setSelectedDoctorDays(days)
     setIsModalOpen(true);
   };
 
@@ -79,7 +77,7 @@ export default function Doctors() {
                 key={doctor._id}
                 imageSrc={doctor.avatar}
                 altText={`Doctor ${doctor.first_Name} ${doctor.last_Name}`}
-                university={doctor.qualification}
+                city={doctor.city}
                 specialization={doctor.specialization}
                 startTime={doctor.StartTime}
                 endTime={doctor.EndTime}
@@ -87,7 +85,7 @@ export default function Doctors() {
                 doctorName={`Dr. ${doctor.first_Name} ${doctor.last_Name}`}
                 delay={index * 200}
                 duration="1500"
-                onButtonClick={() => handleOpenModal(doctor._id, doctor.DaysWork)}
+                onButtonClick={() => handleOpenModal(doctor)}
                 bookButton={true}
               />
             ))}
@@ -97,7 +95,7 @@ export default function Doctors() {
           <PaginationRounded count={doctorCount} onPageChange={handlePageChange} theme='dark' />
         </div>
       </div>
-      {isModalOpen && <AppointmentModal doctorId={selectedDoctor} handleCloseModal={handleCloseModal} daysWork={selectedDoctorDays} doctorStartTime={"09:00"} doctorEndTime={"17:00"} />}
+      {isModalOpen && <AppointmentModal doctorId={selectedDoctor._id} handleCloseModal={handleCloseModal} daysWork={selectedDoctor.DaysWork} doctorStartTime={selectedDoctor.StartTime} doctorEndTime={selectedDoctor.EndTime} />}
     </div>
   )
 }

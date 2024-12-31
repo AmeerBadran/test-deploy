@@ -7,7 +7,7 @@ import { RiToothFill } from "react-icons/ri";
 import { FaUserDoctor } from "react-icons/fa6";
 import AOS from 'aos';
 import 'aos/dist/aos.css'; // You can also use <link> for styles
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SearchForm from "../components/molecule/SearchFrom";
 import DoctorCard from "../components/molecule/DoctorCard"
 import { getDoctors } from "../api/endpoints/doctors"
@@ -17,15 +17,16 @@ export default function Home() {
   const [openSearch, setOpenSearch] = useState(false);
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true)
-
+  const doctorsSectionRef = useRef(null);
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
         setLoading(true)
         const respons = await getDoctors();
         setDoctors(respons.data);
+        // eslint-disable-next-line no-unused-vars
       } catch (error) {
-        console.error("Error fetching doctors:", error);
+        //
       } finally {
         setLoading(false)
       }
@@ -34,6 +35,11 @@ export default function Home() {
     fetchDoctors();
   }, []);
 
+
+  const handleSearch = (updatedDoctors) => {
+    setDoctors(updatedDoctors);
+    doctorsSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
 
   const handleButtonClick = () => {
@@ -51,7 +57,7 @@ export default function Home() {
             <AuthButton label="Click here to find a doctor" icon={IoSearchSharp} roundedPosition="full" bgType="light" onClick={handleButtonClick} />
           </div>
           <div className={`${openSearch ? 'p-4' : 'h-0'} w-full bg-white mt-7 transition-all duration-500 ease-out rounded-md shadow-inner shadow-gray-300 overflow-hidden`}>
-            <SearchForm setDoctors={setDoctors} />
+            <SearchForm setDoctors={handleSearch} />
 
           </div>
         </div>
@@ -61,7 +67,7 @@ export default function Home() {
           <PiStarFourFill data-aos="zoom-in-up" data-aos-duration="1700" data-aos-delay="700" className=" absolute top-72 -right-20 bg-[#0E384C] w-24 h-24 p-3 rounded-full text-[#FFF] shadow-xl hover:bg-[#FFF] hover:text-[#0E384C]" />
         </div>
       </div>
-      <div className="bg-gradient-to-r from-[#0E384C] to-cyan-700 w-full py-20 px-4">
+      <div ref={doctorsSectionRef} className="bg-gradient-to-r from-[#0E384C] to-cyan-700 w-full py-20 px-4">
         <div className="max-w-[1300px] mx-auto text-white flex flex-col mb-20 text-center">
           <p className="flex justify-center items-center gap-3 text-[#cce2ee]"><PiStarFourFill />OUR TEAM</p>
           <h1 className="my-7 text-6xl font-extrabold"><span className="text-[#9dcbdf]">Our Friendly</span> Dentists Team</h1>
@@ -78,7 +84,7 @@ export default function Home() {
                 key={doctor._id}
                 imageSrc={doctor.avatar}
                 altText={`Doctor ${doctor.first_Name} ${doctor.last_Name}`}
-                university={doctor.qualification}
+                city={doctor.city}
                 specialization={doctor.specialization}
                 startTime={doctor.StartTime}
                 endTime={doctor.EndTime}

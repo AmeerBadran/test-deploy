@@ -11,11 +11,10 @@ const SearchForm = ({ setDoctors }) => {
     const getSearchValues = async () => {
       try {
         const response = await fetchSearchValues();
-        console.log(response.data);
         setSearchValues(response.data);
         // eslint-disable-next-line no-unused-vars
       } catch (error) {
-        toast.error('Server error 500');
+        //
       }
     };
 
@@ -29,13 +28,11 @@ const SearchForm = ({ setDoctors }) => {
     },
     onSubmit: async (values) => {
       try {
-        const response = await doctorsSearch(values)
-        console.log(response)
-        setDoctors(response.data)
-        // eslint-disable-next-line no-unused-vars
+        const response = await doctorsSearch(values);
+        setDoctors(response.data);
+      // eslint-disable-next-line no-unused-vars
       } catch (error) {
-        console.log(values)
-        toast.error('Not Found')
+        toast.error('Not Found');
       }
     },
   });

@@ -2,9 +2,10 @@ import { useSelector } from "react-redux";
 import PaginationRounded from "../components/molecule/PaginationRounded";
 import Table from "../components/molecule/Table";
 import { useEffect, useState } from "react";
-import { deleteAppointment, getAppointments, countAppointments } from "../api/endpoints/doctorsPage";
+//import { deleteAppointment } from "../api/endpoints/doctorsPage";
 import { toast } from "react-toastify";
 import ReactLoading from "react-loading";
+import { deleteUserAppointments, getUserAppointments } from "../api/endpoints/userProfile";
 
 export default function UserAppointment() {
   const authData = useSelector((state) => state.authData);
@@ -18,15 +19,16 @@ export default function UserAppointment() {
   };
 
   useEffect(() => {
-    const callAppointments = async (pageNumber, doctorId) => {
+    const callAppointments = async (pageNumber) => {
       try {
         setLoading(true); // Start loading
-        const response = await getAppointments(pageNumber, 6, doctorId);
-        const response2 = await countAppointments(doctorId);
-        setAppointments(response.data);
-        setCountNumber(Math.ceil(response2.data.count / 6));
+        const response = await getUserAppointments(pageNumber, 6);
+        setAppointments(response.data.data);
+        setCountNumber(response.data.pagination.totalPages);
+        
+       // eslint-disable-next-line no-unused-vars
       } catch (error) {
-        toast.error(error.message || "Failed to load appointments");
+        //
       } finally {
         setLoading(false); // Stop loading
       }
@@ -37,8 +39,8 @@ export default function UserAppointment() {
 
   const handleDeleteAppointment = async (id) => {
     try {
-      await deleteAppointment(id);
-      setAppointments(appointments.filter((appointment) => appointment.id !== id));
+      await deleteUserAppointments(id);
+      setAppointments(appointments.filter((appointment) => appointment._id !== id));
       toast.success("Appointment deleted successfully");
       // eslint-disable-next-line no-unused-vars
     } catch (error) {
@@ -56,7 +58,7 @@ export default function UserAppointment() {
           <ReactLoading type="spin" color="#1E84B5" height={50} width={50} />
         </div>
       ) : (
-        <Table tableData={appointments} onDelete={handleDeleteAppointment} tableType={'appointment'} />
+        <Table tableData={appointments} onDelete={handleDeleteAppointment} tableType={'appointment'} appType={'user'} />
       )}
       <PaginationRounded count={countNumber} onPageChange={handlePageChange} theme='light' />
     </div>
