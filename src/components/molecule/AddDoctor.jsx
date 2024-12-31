@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
 import { useFormik } from 'formik';
-import { LuUploadCloud } from "react-icons/lu";
+import { IoCloudUploadSharp } from "react-icons/io5";
 import { addDoctor } from '../../api/endpoints/doctors';
 import { toast } from 'react-toastify';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -35,7 +35,7 @@ const ImageUpload = ({ setFieldValue }) => {
             />
           ) : (
             <div className='flex flex-col justify-center items-center gap-3 p-6 text-center'>
-              <LuUploadCloud className='text-gray-500 text-3xl' />
+              <IoCloudUploadSharp  className='text-gray-500 text-3xl' />
               <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
                 <span className="font-semibold">Click to upload</span> or drag and drop
               </p>
