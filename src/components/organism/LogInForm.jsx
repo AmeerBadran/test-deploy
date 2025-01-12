@@ -46,7 +46,7 @@ const LogInForm = () => {
       if (response.error) {
         toast.error(response.error || 'Login failed. Please try again.');
       } else {
-        toast.success(response.data.message);
+        toast.success(`Welcome ${response.userData.first_Name} ${response.userData.last_Name}`);
         dispatch(saveAuthData({
           accessToken: response.data.accessToken,
           userData: response.data.userData,
