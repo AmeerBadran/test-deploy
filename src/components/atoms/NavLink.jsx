@@ -33,7 +33,7 @@ const NavLinks = ({ linksLayout, bgColor, handleNavButton }) => {
     <>
       {navLinks.map((link, index) => (
         link.label !== 'MainDoctor' && link.label !== 'UserProfile' ? (
-          (role !== 'admin' && link.label !== 'Admin') ? (
+          (role !== 'admin' && link.label !== 'Admin' && link.label !== "Add Doctor") ? (
             <li key={index} className={`${linksLayout === 'halfPage' && 'group w-full'}`
             } >
               <NavLink
@@ -65,6 +65,9 @@ const NavLinks = ({ linksLayout, bgColor, handleNavButton }) => {
               {isDropdownOpen && (
                 <div id="dropdown" className={`absolute z-[100] divide-y divide-gray-100 rounded-lg w-44 shadow-lg font-semibold ${dropdownStyle}`}>
                   <ul className="py-2 text-sm">
+                  <li>
+                      <Link to="/mainDoctor/profile" onClick={toggleDropdown} className={`block px-4 py-2 ${secLinkStyle}`}>Profile</Link>
+                    </li>
                     <li>
                       <Link to="/mainDoctor/appointment" onClick={toggleDropdown} className={`block px-4 py-2 ${secLinkStyle}`}>Appointments</Link>
                     </li>
@@ -83,6 +86,9 @@ const NavLinks = ({ linksLayout, bgColor, handleNavButton }) => {
               {isDropdownOpen && (
                 <div id="dropdown" className={`absolute z-[100] divide-y divide-gray-100 rounded-lg w-44 shadow-lg font-semibold ${dropdownStyle}`}>
                   <ul className="py-2 text-sm">
+                    <li>
+                      <Link to="/userProfile/profile" onClick={toggleDropdown} className={`block px-4 py-2 ${secLinkStyle}`}>Profile</Link>
+                    </li>
                     <li>
                       <Link to="/userProfile/userAppointment" onClick={toggleDropdown} className={`block px-4 py-2 ${secLinkStyle}`}>Appointments</Link>
                     </li>

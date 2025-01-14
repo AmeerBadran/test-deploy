@@ -35,3 +35,10 @@ export const searchValues = () => {
   return axiosInstance.get('/get/searchData');
 }
 
+export const getDoctorData = (id) => {
+  return axiosInstance.get(`/get/doctor/${id}`);
+}
+
+export const updateDoctorData = (doctorId,doctorData) => {
+  return axiosInstance.put(`/admin/update-doctor/${doctorId}`, doctorData);
+}

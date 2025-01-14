@@ -21,6 +21,16 @@ const UserProfile = () => {
             </h1>
           </div>
           <div className="w-full">
+          <Link to="profile">
+              <div
+                className={`p-4 ${location.pathname === "/userProfile/profile"
+                  ? "bg-[#0E485E33] hover:bg-[#0E485E44] border-l-4 shadow-inner shadow-[#0E485E44] border-[#0E485E]"
+                  : "hover:bg-[#0E485E33]"
+                  } text-lg font-semibold text-[#0E485E] transition-all duration-300`}
+              >
+                <p>Profile</p>
+              </div>
+            </Link>
             <Link to="userAppointment">
               <div
                 className={`p-4 ${location.pathname === "/userProfile/userAppointment"

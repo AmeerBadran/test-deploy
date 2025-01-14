@@ -10,6 +10,7 @@ import SignUp from "../pages/SignUp";
 import ContactUs from "../pages/ContactUs";
 import Doctors from "../pages/Doctors";
 import NotFound from "../pages/NotFound";
+import AddDoctor from "../pages/AddDoctor";
 import Admin from "../pages/Admin";
 import MainDoctor from "../pages/MainDoctor";
 import Appointment from "../template/Appointment";
@@ -20,6 +21,12 @@ import PersistLogin from "../components/HOC/PersistLogin";
 import UserProfile from "../pages/UserProfile";
 import UserAppointment from "../template/UserAppointment";
 import UserRecords from "../template/UserRecords";
+import AllAppointments from "../template/AllAppointments";
+import AllRecords from "../template/AllRecords";
+import AllUsers from "../template/AllUsers";
+import AllDoctors from "../template/allDoctors";
+import UserProfileForm from "../template/UserProfileForm";
+import DoctorProfileForm from "../template/DorctorProfileForm";
 
 const router = createBrowserRouter([
   {
@@ -46,10 +53,38 @@ const router = createBrowserRouter([
             ),
           },
           {
+            path: "/addDoctor",
+            element: (
+              <ProtectdRoute path="/addDoctor" element={<AddDoctor />} />
+            ),
+          },
+          {
             path: "/admin",
             element: (
               <ProtectdRoute path="/admin" element={<Admin />} />
             ),
+            children: [
+              {
+                path: "profile",
+                element: <UserProfileForm />,
+              },
+              {
+                path: "allUsers",
+                element: <AllUsers />,
+              },
+              {
+                path: "allDoctors",
+                element: <AllDoctors />,
+              },
+              {
+                path: "appointment",
+                element: <AllAppointments />,
+              },
+              {
+                path: "patientRecords",
+                element: <AllRecords />,
+              },
+            ]
           },
           {
             path: "/mainDoctor",
@@ -57,6 +92,10 @@ const router = createBrowserRouter([
               <ProtectdRoute path="/mainDoctor" element={<MainDoctor />} />
             ),
             children: [
+              {
+                path: "profile",
+                element: <DoctorProfileForm />,
+              },
               {
                 path: "appointment",
                 element: <Appointment />,
@@ -73,6 +112,10 @@ const router = createBrowserRouter([
               <ProtectdRoute path="/userProfile" element={<UserProfile />} />
             ),
             children: [
+              {
+                path: "profile",
+                element: <UserProfileForm />,
+              },
               {
                 path: "userAppointment",
                 element: <UserAppointment />,
@@ -103,9 +146,7 @@ const router = createBrowserRouter([
       },
     ],
   },
-], {
-  basename: "/test-deploy/",
-});
+]);
 
 export default function AppRouter() {
   return (

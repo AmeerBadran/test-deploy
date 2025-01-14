@@ -21,8 +21,8 @@ const LogInForm = () => {
       } else {
         return { error: "Login failed. Please try again." };
       }
+    // eslint-disable-next-line no-unused-vars
     } catch (error) {
-      toast.error("Login failed:", error);
       return { error: "Login failed. Please try again." };
     }
   };
@@ -46,7 +46,8 @@ const LogInForm = () => {
       if (response.error) {
         toast.error(response.error || 'Login failed. Please try again.');
       } else {
-        toast.success(`Welcome ${response.userData.first_Name} ${response.userData.last_Name}`);
+        console.log(response)
+        toast.success(`Welcome ${response.data.userData.first_Name} ${response.data.userData.last_Name}`);
         dispatch(saveAuthData({
           accessToken: response.data.accessToken,
           userData: response.data.userData,

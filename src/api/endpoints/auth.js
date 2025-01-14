@@ -1,6 +1,7 @@
 import axiosInstance from "../axios";
 
 export const logIn = (loginData) => {
+  console.log("hi")
   return axiosInstance.post('/auth/login', loginData, {
     withCredentials: true
   });;

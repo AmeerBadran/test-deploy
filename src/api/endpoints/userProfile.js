@@ -17,3 +17,15 @@ export const getUserRecords = (page, limit) => {
   const patient_id = state.authData?.userId;
   return axiosInstance.get(`/get/patient/${patient_id}/medications?page=${page}&limit=${limit}`);
 }
+
+export const getUserDataById = (id) => {
+  return axiosInstance.get(`/admin/get-patient/${id}`);
+}
+
+export const updateUserProfile = (data) => {
+  const state = store.getState();
+  const patient_id = state.authData?.userId;
+  console.log(data,patient_id)
+  return axiosInstance.put(`/admin/update-patient/${patient_id}`, data);
+}
+
