@@ -71,6 +71,7 @@ export default function UserProfileForm() {
         chronic_diseases: userData.chronic_diseases || [],
       });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userData]);
 
   return (

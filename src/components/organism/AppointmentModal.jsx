@@ -49,8 +49,11 @@ const AppointmentModal = ({ doctorId, handleCloseModal, doctorStartTime, daysWor
       }
       try {
         const response = await addAppointment(values);
-        console.log(response);
-        toast.success('Appointment created successfully');
+        if (response === false) {
+          toast.warn('You are banned. Contact an admin to unban.')
+        } else {
+          toast.success('Appointment created successfully');
+        }
         handleCloseModal()
         // eslint-disable-next-line no-unused-vars
       } catch (error) {

@@ -8,7 +8,6 @@ export const getUserAppointments = (page, limit) => {
 }
 
 export const deleteUserAppointments = (appointment_id) => {
-  console.log(appointment_id)
   return axiosInstance.delete(`/delete/patient/${appointment_id}/deleteApp`);
 }
 
@@ -25,7 +24,6 @@ export const getUserDataById = (id) => {
 export const updateUserProfile = (data) => {
   const state = store.getState();
   const patient_id = state.authData?.userId;
-  console.log(data,patient_id)
   return axiosInstance.put(`/admin/update-patient/${patient_id}`, data);
 }
 

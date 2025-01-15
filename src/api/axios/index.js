@@ -3,8 +3,7 @@ import { store } from '../../app/store';
 
 const axiosInstance = axios.create({
   
-  baseURL: 'https://cos-server-rndb.onrender.com',
-  //https://cos-server-9lb9.onrender.com
+  baseURL: 'https://cos-server-4i2w.onrender.com',
   withCredentials: true,
 });
 

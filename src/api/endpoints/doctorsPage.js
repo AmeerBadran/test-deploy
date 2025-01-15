@@ -1,5 +1,6 @@
 import axiosInstance from "../axios";
 import { store } from '../../app/store';
+import { getUserDataById } from "./userProfile";
 export const getmedications = (page, limit) => {
   const state = store.getState();
   const doctorId = state.authData?.userId;
@@ -9,7 +10,6 @@ export const getmedications = (page, limit) => {
 export const getPatientForRecords = (page, limit, filter) => {
   const state = store.getState();
   const doctorId = state.authData?.userId;
-  console.log(filter)
   return axiosInstance.get(`get/medications/${doctorId}/${page}/${limit}/${filter}`);
 }
 
@@ -50,4 +50,18 @@ export const updateVisit = (medicationId, updatedData) => {
 
 export const deleteVisit = (medicationId, visitId) => {
   return axiosInstance.delete(`/delete/visit/${medicationId}/${visitId}`);
+}
+
+export const increaseBannedValue = async (userId) => {
+  const response = await getUserDataById(userId);
+  console.log(response)
+  if (response.data.banned >= 3) {
+    return false;
+  } else {
+    return axiosInstance.put(`/admin/increase-banned/${userId}`);
+  }
+}
+
+export const getDoctorDataById = (id) => {
+  return axiosInstance.get(`/admin/get-doctor/${id}`);
 }

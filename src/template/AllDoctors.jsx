@@ -99,6 +99,7 @@ export default function AllDoctors() {
                 <td className="border px-2 py-2">{doctor.country}-{doctor.city}</td>
                 <td className="border px-2 py-2">{doctor.phone}</td>
                 <td className="border px-2 py-2">{doctor.email}</td>
+                
                 <td className="border px-2 py-2">
                   <button
                     onClick={() => handleViewDetails(doctor)}

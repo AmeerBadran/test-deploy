@@ -7,39 +7,41 @@ import RecordesTableRow from "./RecordesTableRow";
 import VisitsModal from "../organism/VisitsModal";
 import { toast } from "react-toastify";
 
-export default function Table({ tableData, onDelete, tableType, appType = 'doctor' }) {
+export default function Table({ tableData = [], onDelete, tableType, onBanned, appType = 'doctor' }) {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isModalVisitsOpen, setModalVisitsOpen] = useState(false);
-  const [initialRecords, setInitialRecords] = useState([])
+  const [initialRecords, setInitialRecords] = useState([]);
   const [patientId, setPatientId] = useState();
-  console.log(tableData)
+
   const openModal = (id) => {
-    setModalVisitsOpen(false)
-    setModalOpen(true)
-    setPatientId(id)
+    setModalVisitsOpen(false);
+    setModalOpen(true);
+    setPatientId(id);
   };
 
   const openVisitsModal = (id, records) => {
-    setModalOpen(false)
-    setModalVisitsOpen(true)
-    setPatientId(id)
-    setInitialRecords(records)
+    setModalOpen(false);
+    setModalVisitsOpen(true);
+    setPatientId(id);
+    setInitialRecords(records);
   };
 
   const closeModal = () => setModalOpen(false);
   const closeVisitsModal = () => setModalVisitsOpen(false);
 
   const handleDoneAppointment = async (id) => {
-    await doneAppointment(id);
-    toast.success("Approved Go to the records page to view the patient")
+    try {
+      await doneAppointment(id);
+      toast.success("Approved! Go to the records page to view the patient");
+    } catch (error) {
+      toast.error("Failed to mark the appointment as done. Please try again.");
+    }
   };
-
-
 
   const headers = {
     appointment: appType === 'doctor'
-      ? ['Check Done', 'Data & Date', 'Date', 'Condition']
-      : ['Data & Date', 'Email', 'Condition'],
+      ? ['Check Done', 'Patient Name', 'Date & Time', 'Email', 'Condition']
+      : ['Patient Name', 'Date & Time', 'Email', 'Condition'],
     records: appType === 'doctor'
       ? ['Add Record', 'Patient Name', 'Email', 'Condition']
       : ['Patient Name', 'Email', 'Condition'],
@@ -56,7 +58,7 @@ export default function Table({ tableData, onDelete, tableType, appType = 'docto
           </tr>
         </thead>
 
-        {tableData.length > 0 && (
+        {Array.isArray(tableData) && tableData.length > 0 ? (
           <tbody>
             {tableData.map((item) =>
               tableType === 'appointment' ? (
@@ -64,26 +66,33 @@ export default function Table({ tableData, onDelete, tableType, appType = 'docto
                   key={item._id}
                   item={item}
                   onDelete={onDelete}
+                  onBanned={onBanned}
                   appType={appType}
                   doneAppointment={handleDoneAppointment}
                 />
               ) : (
-                <RecordesTableRow key={item._id} item={item} openModal={openModal} appType={appType} openVisitsModal={openVisitsModal} />
+                <RecordesTableRow
+                  key={item._id}
+                  item={item}
+                  openModal={openModal}
+                  appType={appType}
+                  openVisitsModal={openVisitsModal}
+                />
               )
             )}
           </tbody>
+        ) : (
+          <p className="text-2xl font-black text-center my-10">No Data</p>
         )}
       </table>
-      {(tableData.length === 0 || tableData.message === 'No data Found') && (
-        <p className="text-2xl font-black text-center my-10">No Data</p>
-      )}
-      {tableType === 'records' ?
+
+      {tableType === 'records' && (
         <>
           <MedicationModal
             isOpen={isModalOpen}
             onClose={closeModal}
-            medicationId={patientId} />
-
+            medicationId={patientId}
+          />
           <VisitsModal
             isOpen={isModalVisitsOpen}
             onClose={closeVisitsModal}
@@ -92,7 +101,8 @@ export default function Table({ tableData, onDelete, tableType, appType = 'docto
             appType={appType}
           />
         </>
-        : <></>}
+      )}
     </>
   );
 }
+

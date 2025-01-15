@@ -54,21 +54,12 @@ export default function Admin() {
                 className={`p-4 ${location.pathname === "/admin/appointment"
                   ? "bg-[#0E485E33] hover:bg-[#0E485E44] border-l-4 shadow-inner shadow-[#0E485E44]"
                   : "hover:bg-[#0E485E33]"
-                  } text-lg font-semibold text-[#0E485E] border-[#0E485E] transition-all duration-300`}
+                  } text-lg font-semibold text-[#0E485E] rounded-b-lg border-[#0E485E] transition-all duration-300`}
               >
                 <p>Appointments</p>
               </div>
             </Link>
-            <Link to="patientRecords">
-              <div
-                className={`p-4 ${location.pathname === "/admin/patientRecords"
-                  ? "bg-[#0E485E33] hover:bg-[#0E485E44] border-l-4 shadow-inner shadow-[#0E485E44] border-[#0E485E]"
-                  : "hover:bg-[#0E485E33]"
-                  } text-lg font-semibold text-[#0E485E] rounded-b-lg transition-all duration-300`}
-              >
-                <p>PatientRecords</p>
-              </div>
-            </Link>
+            
 
           </div>
         </div>

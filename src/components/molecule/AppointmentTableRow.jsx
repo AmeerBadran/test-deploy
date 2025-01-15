@@ -1,12 +1,15 @@
 /* eslint-disable react/prop-types */
+import { BiAlarmOff } from 'react-icons/bi';
 import { FaCheck } from 'react-icons/fa';
-import { IoTime } from 'react-icons/io5';
-import { MdDateRange } from 'react-icons/md';
-import { PiNotebookDuotone } from 'react-icons/pi';
+import { FiAlertOctagon } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
-const AppointmentTableRow = ({ item, onDelete, doneAppointment, appType }) => {
+const AppointmentTableRow = ({ item, onDelete, onBanned, doneAppointment, appType }) => {
   const handleDelete = () => {
+    onDelete(item._id);
+  };
+  const handleBanned = () => {
+    onBanned(item.patient_id,item.name);
     onDelete(item._id);
   };
 
@@ -36,20 +39,9 @@ const AppointmentTableRow = ({ item, onDelete, doneAppointment, appType }) => {
       }
       <td className="p-3 text-center">
         <h1 className="font-bold">{item.name}</h1>
-        <div className="flex gap-3 text-gray-600 text-sm justify-center">
-          <p className="flex items-center">
-            <PiNotebookDuotone className="mr-1 text-blue-500" />
-            {item.details}
-          </p>
-          <p className="flex items-center">
-            <MdDateRange className="mr-1 text-green-500" />
-            {formatDate(item.date)}
-          </p>
-          <p className="flex items-center">
-            <IoTime className="mr-1 text-yellow-500" />
-            {item.time}
-          </p>
-        </div>
+      </td>
+      <td className="p-3 text-center">
+        {formatDate(item.date)}/{item.time}
       </td>
       <td className="text-red-600 p-3 text-center">
         {item.email}
@@ -59,11 +51,21 @@ const AppointmentTableRow = ({ item, onDelete, doneAppointment, appType }) => {
           <button
             type="button"
             onClick={handleDelete}
+            title='Delete this appointment'
             className="bg-red-600 px-4 py-2 rounded flex justify-center items-center hover:bg-red-800 text-white"
           >
-            Cancel appointment
-            {/* <FaTrashAlt className="text-white" /> */}
+            <BiAlarmOff className='text-2xl' />
           </button>
+          {appType === 'admin' || appType === 'doctor' ?
+            <button
+              type="button"
+              title='Add one banned'
+              onClick={handleBanned}
+              className="bg-amber-600 px-4 py-2 rounded flex justify-center items-center hover:bg-amber-500 text-white"
+            >
+              <FiAlertOctagon className='text-2xl' />
+            </button>
+            : (<div></div>)}
         </div>
       </td>
     </tr >

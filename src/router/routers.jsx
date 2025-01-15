@@ -22,7 +22,6 @@ import UserProfile from "../pages/UserProfile";
 import UserAppointment from "../template/UserAppointment";
 import UserRecords from "../template/UserRecords";
 import AllAppointments from "../template/AllAppointments";
-import AllRecords from "../template/AllRecords";
 import AllUsers from "../template/AllUsers";
 import AllDoctors from "../template/allDoctors";
 import UserProfileForm from "../template/UserProfileForm";
@@ -79,10 +78,6 @@ const router = createBrowserRouter([
               {
                 path: "appointment",
                 element: <AllAppointments />,
-              },
-              {
-                path: "patientRecords",
-                element: <AllRecords />,
               },
             ]
           },

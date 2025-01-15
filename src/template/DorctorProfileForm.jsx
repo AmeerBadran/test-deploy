@@ -1,285 +1,166 @@
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
-//import { useSelector } from "react-redux";
-import { updateUserProfile } from "../api/endpoints/userProfile";
-import { toast } from "react-toastify";
-import { IoMdCloudUpload } from 'react-icons/io';
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import { Autocomplete, Chip, TextField } from "@mui/material";
-export default function DoctorProfileForm() {
+import * as Yup from "yup";
+import { getDoctorDataById } from "../api/endpoints/doctorsPage";
+import { updateDoctorData } from "../api/endpoints/doctors";
 
-  const [avatarPreview, setAvatarPreview] = useState('');
-  const [ourAvatar, setOurAvatar] = useState('');
-  const [selectedDays, setSelectedDays] = useState([]);
+export default function DoctorProfileForm() {
+  const [userData, setUserData] = useState(null);
+  const [daysWork, setDaysWork] = useState([]);
+  const id = useSelector((state) => state.authData.userId);
+
   const daysOptions = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-
-  const authData = useSelector((state) => state.authData);
-  // const [userData, setUserData] = useState(null);
-  // const id = useSelector((state) => state.authData.userId);
-
-  // const getUserData = async (userId) => {
-  //   try {
-  //     const response = await getUserDataById(userId);
-  //     return response.data;
-  //   } catch (e) {
-  //     console.log(e)
-  //     return { error: "not_found" };
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     if (id) {
-  //       const data = await getUserData(id);
-  //       setUserData(data);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [id]);
-
-  const formik = useFormik({
-    initialValues: {
-      first_Name: 'userData.first_Name.value',
-      last_Name: 'userData.last_Name',
-      insurance: 'userData.insurance',
-      phone: 'userData.phone',
-      country: 'userData.country',
-      city: 'userData.city',
-      experience: 'userData.experience',
-      specialization: 'userData.specialization',
-      description: 'userData.description',
-      StartTime: 'userData.StartTime',
-      EndTime: 'userData.EndTime',
-      DaysWork: 'userData.DaysWork',
-      avatar: 'userData.avatar',
-    },
-
-    onSubmit: async (values) => {
-      try {
-        const response = await updateUserProfile(values);
-        if (response.status === 200) {
-          toast.success("Data updated successfully Please Login again");
-        } else {
-          toast.error("Data does not updated correctly")
-        }
-      } catch (e) {
-        console.log(e);
-        toast.error("Data does not updated correctly")
-      }
-
-    },
-  });
-  useEffect(() => {
-    if (!avatarPreview) {
-      setOurAvatar(authData.allUserData.avatar);
-    } else {
-      setOurAvatar(avatarPreview);
-    }
-  }, [avatarPreview, authData.allUserData.avatar])
-  const handleAvatarChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      formik.setFieldValue('avatar', file);
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setAvatarPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+  const fetchDoctorData = async (doctorId) => {
+    try {
+      const response = await getDoctorDataById(doctorId);
+      setUserData(response.data);
+      setDaysWork(response.data?.DaysWork || [])
+    } catch (error) {
+      console.error("Error fetching doctor data:", error);
+      toast.error("Failed to load profile data.");
     }
   };
+
+  useEffect(() => {
+    if (id) {
+      fetchDoctorData(id);
+    }
+  }, [id]);
+
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      first_Name: userData?.first_Name || "",
+      last_Name: userData?.last_Name || "",
+      insurance: userData?.insurance || "",
+      phone: userData?.phone || "",
+      country: userData?.country || "",
+      city: userData?.city || "",
+      experience: userData?.experience || "",
+      specialization: userData?.specialization || "",
+      description: userData?.description || "",
+      StartTime: userData?.StartTime || "",
+      EndTime: userData?.EndTime || "",
+      DaysWork: userData?.DaysWork || [],
+      avatar: userData?.avatar || "",
+    },
+    validationSchema: Yup.object({
+      first_Name: Yup.string().required("First name is required"),
+      last_Name: Yup.string().required("Last name is required"),
+      phone: Yup.string().required("Phone number is required"),
+      country: Yup.string().required("Country is required"),
+      city: Yup.string().required("City is required"),
+      experience: Yup.string().required("Experience is required"),
+      specialization: Yup.string().required("Specialization is required"),
+      description: Yup.string().required("Description is required"),
+    }),
+    onSubmit: async (values) => {
+      try {
+        const response = await updateDoctorData(id, { ...values, avatar: undefined });
+        if (response.status === 200) {
+          toast.success("Profile updated successfully! Please log in again.");
+        } else {
+          toast.error("Failed to update profile.");
+        }
+      } catch (error) {
+        console.error("Error updating profile:", error);
+        toast.error("An error occurred while updating your profile.");
+      }
+    },
+  });
+
   return (
     <div className="p-6 mx-auto bg-[#0E485E] bg-opacity-20 rounded-lg border col-span-3 w-full lg:ml-6 space-y-6">
       <h1 className="text-3xl font-bold mb-6">Profile</h1>
-      <form onSubmit={formik.handleSubmit} className="p-6 mx-auto bg-white rounded-lg ">
-        <div className="mb-4 border-b pb-4">
-          <label className="block text-gray-700">Your Avatar</label>
-          <div className="flex items-center space-x-4 ">
-            <img
-              src={`https://cos-server-rndb.onrender.com/uploads/avatar/${ourAvatar}`}
-              alt="Avatar Preview"
-              className="w-20 h-20 rounded-full my-4 object-cover  border-4 border-base-color"
-            />
-            <label
-              htmlFor="avatar"
-              className="cursor-pointer bg-[#0E485E] hover:bg-opacity-90 w-12 h-12 flex justify-center items-center text-white  rounded-md transition-all duration-300"
-            >
-              <IoMdCloudUpload className='text-2xl' />
-            </label>
-            <input
-              id="avatar"
-              name="avatar"
-              type="file"
-              accept="image/png, image/jpeg, image/jpg"
-              onChange={handleAvatarChange}
-              className="hidden "
-            />
-          </div>
-          <p className="text-gray-500 mt-2">PNG or JPG no bigger than 800px width and height</p>
-        </div>
-        <div className="grid grid-cols-2 gap-5">
-          <div >
-            <label htmlFor="first_Name" className="block text-gray-700">First Name</label>
-            <input
-              id="first_Name"
-              name="first_Name"
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.first_Name}
-              className="w-full mt-1 p-2 border border-gray-300 rounded-md"
-            />
-          </div>
+      <form onSubmit={formik.handleSubmit} className="p-6 mx-auto bg-white rounded-lg">
 
-          <div className="mb-4">
-            <label htmlFor="last_Name" className="block text-gray-700">Last Name</label>
-            <input
-              id="last_Name"
-              name="last_Name"
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.last_Name}
-              className="w-full mt-1 p-2 border border-gray-300 rounded-md"
-            />
-          </div>
-        </div>
         <div className="grid grid-cols-2 gap-5">
-          <div className="mb-4">
-            <label htmlFor="country" className="block text-gray-700">Country</label>
-            <input
-              id="country"
-              name="country"
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.country}
-              className="w-full mt-1 p-2 border border-gray-300 rounded-md"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="city" className="block text-gray-700">City</label>
-            <input
-              id="city"
-              name="city"
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.city}
-              className="w-full mt-1 p-2 border border-gray-300 rounded-md"
-            />
-          </div>
-        </div>
-        <div className="mb-4">
-          <label htmlFor="experience" className="block text-gray-700">Experience</label>
-          <input
-            id="experience"
-            name="experience"
-            type="text"
-            onChange={formik.handleChange}
-            value={formik.values.experience}
-            className="w-full mt-1 p-2 border border-gray-300 rounded-md"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="specialization" className="block text-gray-700">Specialization</label>
-          <input
-            id="specialization"
-            name="specialization"
-            type="text"
-            onChange={formik.handleChange}
-            value={formik.values.specialization}
-            className="w-full mt-1 p-2 border border-gray-300 rounded-md"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="description" className="block text-gray-700">Description</label>
-          <input
-            id="description"
-            name="description"
-            type="text"
-            onChange={formik.handleChange}
-            value={formik.values.description}
-            className="w-full mt-1 p-2 border border-gray-300 rounded-md"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="phone" className="block text-gray-700">Phone Number</label>
-          <input
-            id="phone"
-            name="phone"
-            type="text"
-            onChange={formik.handleChange}
-            value={formik.values.phone}
-            className="w-full mt-1 p-2 border border-gray-300 rounded-md"
-          />
-        </div>
-        <div className="grid grid-cols-2 gap-5">
-        <div>
-          <label htmlFor="StartTime" className="block text-sm font-medium text-gray-700">
-            Start Time:
-          </label>
-          <input
-            id="StartTime"
-            name="StartTime"
-            type="time"
-            step="60"
-            {...formik.getFieldProps('StartTime')}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
-          />
+          {["first_Name", "last_Name", "country", "city", "experience", "specialization", "description", "phone"].map(
+            (field) => (
+              <div key={field} className="mb-4">
+                <label htmlFor={field} className="block text-gray-700 capitalize">
+                  {field.replace("_", " ")}
+                </label>
+                <input
+                  id={field}
+                  name={field}
+                  type="text"
+                  onChange={formik.handleChange}
+                  value={formik.values[field]}
+                  className="w-full mt-1 p-2 border border-gray-300 rounded-md"
+                />
+                {formik.errors[field] && formik.touched[field] && (
+                  <p className="text-red-500 text-sm mt-1">{formik.errors[field]}</p>
+                )}
+              </div>
+            )
+          )}
         </div>
 
-        <div>
-          <label htmlFor="EndTime" className="block text-sm font-medium text-gray-700">
-            End Time:
-          </label>
-          <input
-            id="EndTime"
-            name="EndTime"
-            type="time"
-            step="60"
-            {...formik.getFieldProps('EndTime')}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
-          />
+        <div className="grid grid-cols-2 gap-5">
+          {["StartTime", "EndTime"].map((field) => (
+            <div key={field} className="mb-4">
+              <label htmlFor={field} className="block text-sm font-medium text-gray-700">
+                {field.replace("Time", " Time")}
+              </label>
+              <input
+                id={field}
+                name={field}
+                type="time"
+                onChange={formik.handleChange}
+                value={formik.values[field]}
+                className="w-full mt-1 p-2 border border-gray-300 rounded-md"
+              />
+            </div>
+          ))}
         </div>
-        </div>
-        <div className="col-span-2 md:col-span-3">
+
+        <div className="mb-4">
           <label htmlFor="DaysWork" className="block text-sm font-medium text-gray-700">
-            Days of Work:
+            Days of Work
           </label>
           <Autocomplete
             multiple
             id="DaysWork"
             options={daysOptions}
-            value={selectedDays}
-            onChange={(event, newValue) => {
-              setSelectedDays(newValue);
-            }}
-            freeSolo
+            value={daysWork}
+            onChange={(event, newValue) => setDaysWork(newValue)}
             renderTags={(value, getTagProps) =>
-              value.map((option, index) => (
-                <Chip
-                  key={index}
-                  label={option}
-                  {...getTagProps({ index })}
-                  onDelete={() => {
-                    setSelectedDays((prev) =>
-                      prev.filter((item) => item !== option)
-                    );
-                  }}
-                />
-              ))
+              value.map((option, index) => {
+                const { key, ...tagProps } = getTagProps({ index });
+                return (
+                  <Chip
+                    key={key}
+                    label={option}
+                    className="bg-[#0E485E] text-white"
+                    {...tagProps}
+                  />
+                );
+              })
             }
             renderInput={(params) => (
               <TextField
                 {...params}
                 variant="outlined"
                 placeholder="Select working days"
+                className="border-gray-300 focus:ring-[#0E485E] focus:border-[#0E485E]"
               />
             )}
           />
+
         </div>
-        <button type="submit" className=" bg-[#0E485E] hover:bg-opacity-90  text-white py-2 mt-5 px-4 rounded-md transition-all duration-300">Update Profile</button>
-      </form >
-    </div >
-  )
+
+        <button
+          type="submit"
+          className="bg-[#0E485E] hover:bg-opacity-90 text-white py-2 mt-5 px-4 rounded-md transition-all duration-300"
+        >
+          Update Profile
+        </button>
+      </form>
+    </div>
+  );
 }

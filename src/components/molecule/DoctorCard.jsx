@@ -25,7 +25,7 @@ const DoctorCard = ({
       <div className="h-5/6 relative group overflow-hidden rounded-3xl drop-shadow-lg shadow-white flex-1">
         <img
           className="h-full object-cover transition-all duration-1000 rounded-3xl cursor-pointer scale-110 group-hover:scale-100"
-          src={`https://cos-server-rndb.onrender.com/uploads/avatar/${imageSrc}`}
+          src={`https://cos-server-4i2w.onrender.com/uploads/avatar/${imageSrc}`}
           alt={altText}
         />
         <div className="absolute origin-bottom-left flex flex-col gap-3 justify-center bottom-0 bg-[#EFF8FFDD] rounded-t-3xl px-4 z-10 h-0 w-full group-hover:h-full transition-all duration-500 text-gray-900 group-hover:py-4 overflow-hidden">
