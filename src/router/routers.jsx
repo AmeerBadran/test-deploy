@@ -23,7 +23,7 @@ import UserAppointment from "../template/UserAppointment";
 import UserRecords from "../template/UserRecords";
 import AllAppointments from "../template/AllAppointments";
 import AllUsers from "../template/AllUsers";
-import AllDoctors from "../template/allDoctors";
+import AllDoctors from "../template/AllDoctors";
 import UserProfileForm from "../template/UserProfileForm";
 import DoctorProfileForm from "../template/DorctorProfileForm";
 
