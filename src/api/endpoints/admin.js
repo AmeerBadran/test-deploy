@@ -14,11 +14,11 @@ export const getUsersForAdmin = (page, limit) => {
 }
 
 export const getUsersCount = () => {
-  return axiosInstance.get(`/count/countPatient`);;
+  return axiosInstance.get(`/count/countPatient`);
 }
 
 export const makeUserAdmin = (userId, role) => {
-  
+
   let changeTo;
   if (role === 'admin') {
     changeTo = 'patient';
