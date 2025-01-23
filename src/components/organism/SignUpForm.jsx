@@ -76,7 +76,7 @@ const SignUpForm = () => {
     onSubmit: async values => {
       values.chronic_diseases = selectedAllergies;
       await callSignUp(values);
-      //navigate('/logIn');
+      navigate('/logIn');
     },
   });
 
