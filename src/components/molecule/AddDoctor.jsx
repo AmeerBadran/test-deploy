@@ -85,7 +85,7 @@ const DoctorForm = () => {
       last_Name: Yup.string().required('Last name is required'),
       email: Yup.string().email('Invalid email address').required('Email is required'),
       password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
-      phone: Yup.string().matches(/^\d+$/, 'Phone number must contain only digits').required('Phone number is required'),
+      phone: Yup.string().matches(/^\d+$/, 'Phone number must contain only digits').required('Phone number is required').min(10,'Phone number must have 10 digits').max(10,'Phone number must have 10 digits'),
       avatar: Yup.mixed().nullable(),
       gender: Yup.string().required('Gender is required'),
       StartTime: Yup.string().required('Start time is required'),
