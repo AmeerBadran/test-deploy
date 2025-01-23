@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import { IoCloudUploadSharp } from "react-icons/io5";
 import { addDoctor } from '../../api/endpoints/doctors';
 import { toast } from 'react-toastify';
