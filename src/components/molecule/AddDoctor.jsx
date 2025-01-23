@@ -120,7 +120,7 @@ const DoctorForm = () => {
             {...formik.getFieldProps('first_Name')}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
           />
-          {formik.touched.first_Name && formik.errors.first_Name ? <div>{formik.errors.first_Name}</div> : null}
+          {formik.touched.first_Name && formik.errors.first_Name ? <div className='text-sm text-red-600'>{formik.errors.first_Name}</div> : null}
         </div>
 
         <div>
@@ -134,7 +134,7 @@ const DoctorForm = () => {
             {...formik.getFieldProps('last_Name')}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
           />
-          {formik.touched.last_Name && formik.errors.last_Name ? <div>{formik.errors.last_Name}</div> : null}
+          {formik.touched.last_Name && formik.errors.last_Name ? <div className='text-sm text-red-600'>{formik.errors.last_Name}</div> : null}
         </div>
 
         <div>
@@ -151,7 +151,7 @@ const DoctorForm = () => {
             <option value="male" label="Male" />
             <option value="female" label="Female" />
           </select>
-          {formik.touched.gender && formik.errors.gender ? <div>{formik.errors.gender}</div> : null}
+          {formik.touched.gender && formik.errors.gender ? <div className='text-sm text-red-600'>{formik.errors.gender}</div> : null}
         </div>
 
         <div>
@@ -241,7 +241,7 @@ const DoctorForm = () => {
             {...formik.getFieldProps('phone')}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
           />
-          {formik.touched.phone && formik.errors.phone ? <div>{formik.errors.phone}</div> : null}
+          {formik.touched.phone && formik.errors.phone ? <div className='text-sm text-red-600'>{formik.errors.phone}</div> : null}
         </div>
 
         <div>
@@ -256,7 +256,7 @@ const DoctorForm = () => {
             {...formik.getFieldProps('email')}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
           />
-          {formik.touched.email && formik.errors.email ? <div>{formik.errors.email}</div> : null}
+          {formik.touched.email && formik.errors.email ? <div className='text-sm text-red-600'>{formik.errors.email}</div> : null}
         </div>
         <div>
           <label htmlFor="password" className="block text-sm font-medium text-gray-700">
@@ -269,7 +269,7 @@ const DoctorForm = () => {
             {...formik.getFieldProps('password')}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
           />
-          {formik.touched.password && formik.errors.password ? <div>{formik.errors.password}</div> : null}
+          {formik.touched.password && formik.errors.password ? <div className='text-sm text-red-600'>{formik.errors.password}</div> : null}
         </div>
 
 
@@ -298,6 +298,7 @@ const DoctorForm = () => {
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
           />
         </div>
+        <div></div>
         <div>
           <label htmlFor="StartTime" className="block text-sm font-medium text-gray-700">
             Start Time:
@@ -310,9 +311,9 @@ const DoctorForm = () => {
             {...formik.getFieldProps('StartTime')}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
           />
-          {formik.touched.StartTime && formik.errors.StartTime ? <div>{formik.errors.StartTime}</div> : null}
+          {formik.touched.StartTime && formik.errors.StartTime ? <div className='text-sm text-red-600'>{formik.errors.StartTime}</div> : null}
         </div>
-        <div></div>
+        
         <div>
           <label htmlFor="EndTime" className="block text-sm font-medium text-gray-700">
             End Time:
@@ -325,7 +326,7 @@ const DoctorForm = () => {
             {...formik.getFieldProps('EndTime')}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
           />
-          {formik.touched.EndTime && formik.errors.EndTime ? <div>{formik.errors.EndTime}</div> : null}
+          {formik.touched.EndTime && formik.errors.EndTime ? <div className='text-sm text-red-600'>{formik.errors.EndTime}</div> : null}
         </div>
 
         <div className="col-span-2 md:col-span-3">
@@ -363,7 +364,7 @@ const DoctorForm = () => {
               />
             )}
           />
-          {formik.touched.DaysWork && formik.errors.DaysWork ? <div>{formik.errors.DaysWork}</div> : null}
+          {formik.touched.DaysWork && formik.errors.DaysWork ? <div className='text-sm text-red-600'>{formik.errors.DaysWork}</div> : null}
         </div>
       </div>
 
