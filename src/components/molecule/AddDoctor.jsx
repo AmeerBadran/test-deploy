@@ -370,7 +370,6 @@ const DoctorForm = () => {
 
       <h1 className='mb-8 mt-16 text-xl font-bold text-[#0E394D]'>Profile Image</h1>
       <ImageUpload setFieldValue={formik.setFieldValue} />
-      {imagePreview && <img src={imagePreview} alt="Avatar Preview" height="100" />}
       <div className='mt-8 flex justify-end items-center gap-4'>
         <button
           type="submit"
