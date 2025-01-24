@@ -39,7 +39,7 @@ export default function AllUsers() {
   const handleBanned = async (id, fname, lname) => {
     try {
       const response = await increaseBannedValue(id);
-      if (response.success === false) {
+      if (response.data.success === false) {
         toast.warn("This user is already banned")
       } else {
         if (response.status === 200) {
