@@ -5,11 +5,13 @@ const RecordesTableRow = ({ item, openModal, openVisitsModal, appType }) => {
   return (
 
     <tr>
-      {appType === 'doctor' && item.status === 'in_progress'?
-        (<td className="p-3 flex justify-center items-center">
-          <button type="button" onClick={() => openModal(item._id)} className='w-8 h-8 rounded-md hover:bg-green-700 bg-green-600 flex justify-center items-center'><FaNotesMedical className='text-white' /></button>
-        </td>):<></>
-      }
+      {appType === 'doctor' && item?.status === 'in_progress' && (
+        <td className="p-3 flex justify-center items-center">
+          <button type="button" onClick={() => openModal(item._id)} className='w-8 h-8 rounded-md hover:bg-green-700 bg-green-600 flex justify-center items-center'>
+            <FaNotesMedical className='text-white' />
+          </button>
+        </td>
+      )}
       <td className="p-3 text-center">
         {appType === 'user' ? (item.doctor_id.first_Name + ' ' + item.doctor_id.last_Name) : (item.name)}
 
