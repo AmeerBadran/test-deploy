@@ -9,10 +9,10 @@ const AppointmentTableRow = ({ item, onDelete, onBanned, doneAppointment, appTyp
     onDelete(item._id);
   };
   const handleBanned = () => {
-    onBanned(item.patient_id,item.name);
+    onBanned(item.patient_id, item.name);
     onDelete(item._id);
   };
-
+  console.log(item)
   const handleDone = () => {
     doneAppointment && doneAppointment(item._id);
     toast.success("Approved Go to the records page to view the patient")
