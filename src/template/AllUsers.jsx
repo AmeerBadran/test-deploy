@@ -98,6 +98,7 @@ export default function AllUsers() {
               <th className="border px-2 py-3 text-left text-lg font-bold text-[#0E485E]">birthdate</th>
               <th className="border px-2 py-3 text-left text-lg font-bold text-[#0E485E]">Phone</th>
               <th className="border px-2 py-3 text-left text-lg font-bold text-[#0E485E]">Email</th>
+              <th className="border px-2 py-3 text-left text-lg font-bold text-[#0E485E]">Role</th>
               <th className="border px-2 py-3 text-left text-lg font-bold text-[#0E485E]">Warning</th>
               <th className="border px-2 py-3 text-left text-lg font-bold text-[#0E485E]">Actions</th>
             </tr>
@@ -111,6 +112,7 @@ export default function AllUsers() {
                 <td className="border px-2 py-2">{user.birthdate}</td>
                 <td className="border px-2 py-2">{user.phone}</td>
                 <td className="border px-2 py-2">{user.email}</td>
+                <td className="border px-2 py-2">{user.role}</td>
                 <td className="border px-2 py-2 text-center">{user.banned}</td>
                 <td className="border px-1 py-2 flex h-16 w-full justify-around items-center">
                   <button title='Add one warn' onClick={() => handleBanned(user._id, user.first_Name, user.last_Name)} className=''><FiXCircle className='text-amber-600 text-xl' /></button>
