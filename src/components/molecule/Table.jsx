@@ -40,11 +40,11 @@ export default function Table({ tableData = [], onDelete, tableType, onBanned, a
 
   const headers = {
     appointment: appType === 'doctor'
-      ? ['Check Done', 'Patient Name', 'Date & Time', 'Email', 'Condition']
-      : ['Patient Name', 'Date & Time', 'Email', 'Condition'],
+      ? ['Check Done', 'Name', 'Date & Time', 'Email', 'Condition'] : appType === 'user' ? ['Doctor Name', 'Date & Time', 'Phone', 'Condition']
+        : ['Name', 'Date & Time', 'Email', 'Condition'],
     records: appType === 'doctor'
       ? ['Add Record', 'Patient Name', 'Email', 'Condition']
-      : ['Patient Name', 'Email', 'Condition'],
+      : ['Doctor Name', 'Email', 'Condition'],
   };
 
   return (

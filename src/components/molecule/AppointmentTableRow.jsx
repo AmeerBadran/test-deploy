@@ -38,13 +38,13 @@ const AppointmentTableRow = ({ item, onDelete, onBanned, doneAppointment, appTyp
         </td>
       }
       <td className="p-3 text-center">
-        <h1 className="font-bold">{item.name}</h1>
+        <h1 className="font-bold">{appType === 'user' ? (item.doctor_id.first_Name + '' + item.doctor_id.last_Name) : (item.name)}</h1>
       </td>
       <td className="p-3 text-center">
         {formatDate(item.date)}/{item.time}
       </td>
       <td className="text-red-600 p-3 text-center">
-        {item.email}
+        {appType === 'user' ? (item.doctor_id.phone) : (item.email)}
       </td>
       <td className="p-3 text-center">
         <div className="flex justify-center items-center gap-2 pl-2">
