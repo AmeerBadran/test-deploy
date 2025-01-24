@@ -1,20 +1,25 @@
 /* eslint-disable react/prop-types */
 import { FaEye, FaNotesMedical } from 'react-icons/fa';
 const RecordesTableRow = ({ item, openModal, openVisitsModal, appType }) => {
+  console.log(item)
   return (
 
     <tr>
-      {appType === 'doctor' &&
+      {(appType === 'doctor' && item.status === 'in_progress') &&
         <td className="p-3 flex justify-center items-center">
           <button type="button" onClick={() => openModal(item._id)} className='w-8 h-8 rounded-md hover:bg-green-700 bg-green-600 flex justify-center items-center'><FaNotesMedical className='text-white' /></button>
         </td>
       }
       <td className="p-3 text-center">
-        {item.name}
+        {appType === 'user' ? (item.doctor_id.first_Name + ' ' + item.doctor_id.last_Name) : (item.name)}
 
       </td>
       <td className="p-3 text-center">
-        {item.email}
+        {appType === 'user' ? (item.doctor_id.phone) : (item.email)}
+
+      </td>
+      <td className="p-3 text-center">
+        {item.visits.length}
 
       </td>
       <td className="p-3 text-center">

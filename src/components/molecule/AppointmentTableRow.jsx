@@ -38,7 +38,7 @@ const AppointmentTableRow = ({ item, onDelete, onBanned, doneAppointment, appTyp
         </td>
       }
       <td className="p-3 text-center">
-        <h1 className="font-bold">{appType === 'user' ? (item.doctor_id.first_Name + '' + item.doctor_id.last_Name) : (item.name)}</h1>
+        <h1 className="font-bold">{appType === 'user' ? (item.doctor_id.first_Name + ' ' + item.doctor_id.last_Name) : (item.name)}</h1>
       </td>
       <td className="p-3 text-center">
         {formatDate(item.date)}/{item.time}

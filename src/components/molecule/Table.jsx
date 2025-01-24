@@ -43,8 +43,8 @@ export default function Table({ tableData = [], onDelete, tableType, onBanned, a
       ? ['Check Done', 'Name', 'Date & Time', 'Email', 'Condition'] : appType === 'user' ? ['Doctor Name', 'Date & Time', 'Phone', 'Condition']
         : ['Name', 'Date & Time', 'Email', 'Condition'],
     records: appType === 'doctor'
-      ? ['Add Record', 'Patient Name', 'Email', 'Condition']
-      : ['Doctor Name', 'Email', 'Condition'],
+      ? ['Add Record', 'Patient Name', 'Email', 'Records', 'Condition']
+      : ['Doctor Name', 'Phone', 'Records', 'Condition'],
   };
 
   return (
